@@ -1,0 +1,25 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Les assemblies de reference viennent de NuGet (Krafs.Rimworld.Ref) :
+      # aucune installation de RimWorld n'est necessaire pour compiler.
+      - name: Build
+        run: dotnet build Source/SharedJoysPlus.csproj -c Release --nologo
+
+      - name: Check the built assembly exists
+        run: test -f Mod/Assemblies/SharedJoysPlus.dll

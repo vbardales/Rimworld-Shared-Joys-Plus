@@ -1,0 +1,20 @@
+# Intermediaires de compilation.
+# Directory.Build.props les envoie hors du dossier du mod : ils ne doivent jamais s'y retrouver,
+# le dossier entier partant tel quel sur le Workshop.
+.build/
+Source/obj/
+Source/bin/
+
+
+# Environnements de developpement
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.csproj.user
+
+# Systeme
+Thumbs.db
+desktop.ini
+.DS_Store

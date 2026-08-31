@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <SJP_ModTitle>Shared Joys — tous les loisirs</SJP_ModTitle>
+  <SJP_SharedJoysMissing>Shared Joys n'est pas chargé. Seul le menu des activités sans lieu reste actif.</SJP_SharedJoysMissing>
+
+  <SJP_ExtendBuildings>Étendre les invitations aux bâtiments</SJP_ExtendBuildings>
+  <SJP_ExtendBuildingsDesc>Permet à « Relax at ... » et aux événements autonomes d'utiliser les œuvres d'art, les foyers de méditation et les tombes, qu'aucun JoyGiverDef ne cite nommément.</SJP_ExtendBuildingsDesc>
+  <SJP_EnableActivityMenu>Activer le menu des activités sans lieu</SJP_EnableActivityMenu>
+  <SJP_EnableActivityMenuDesc>Ajoute « Inviter ... à une activité » sur un colon, pour les loisirs qui n'ont aucun bâtiment à cliquer : promenade, contemplation du ciel, baignade, lecture, méditation, substances et friandises.</SJP_EnableActivityMenuDesc>
+  <SJP_ActivityList>Activités proposées :</SJP_ActivityList>
+
+  <SJP_InviteToActivity>Inviter {0} à une activité...</SJP_InviteToActivity>
+  <SJP_JustHungOut>{0} vient tout juste de faire une pause.</SJP_JustHungOut>
+  <SJP_ActivityUnavailable>{0} (personne d'autre ne peut s'y mettre)</SJP_ActivityUnavailable>
+  <SJP_NoActivity>Aucune activité possible pour l'instant.</SJP_NoActivity>
+  <SJP_CantDoActivity>{0} ne peut pas s'y mettre : {1}.</SJP_CantDoActivity>
+  <SJP_NobodyJoined>Personne n'a pu suivre : {0}.</SJP_NobodyJoined>
+
+  <SJP_Act_Meditate>Méditer</SJP_Act_Meditate>
+  <SJP_Act_Pray>Prier</SJP_Act_Pray>
+  <SJP_Act_Skygaze>Contempler le ciel</SJP_Act_Skygaze>
+  <SJP_Act_GoForWalk>Se promener</SJP_Act_GoForWalk>
+  <SJP_Act_GoSwimming>Se baigner</SJP_Act_GoSwimming>
+  <SJP_Act_VisitGrave>Se recueillir sur une tombe</SJP_Act_VisitGrave>
+  <SJP_Act_ViewArt>Admirer une œuvre</SJP_Act_ViewArt>
+  <SJP_Act_BuildSnowman>Faire un bonhomme de neige</SJP_Act_BuildSnowman>
+  <SJP_Act_VisitSickPawn>Rendre visite à un malade</SJP_Act_VisitSickPawn>
+  <SJP_Act_TakeDrug>Partager une substance</SJP_Act_TakeDrug>
+  <SJP_Act_EatChocolate>Partager une friandise</SJP_Act_EatChocolate>
+  <SJP_Act_Reading>Lire ensemble</SJP_Act_Reading>
+
+  <!-- Clés de Shared Joys que ce mod réutilise : le mod d'origine n'est livré qu'en anglais. -->
+  <BluesAlreadySatisfied>{0} est déjà diverti.</BluesAlreadySatisfied>
+  <BluesNotEnoughFren>{0} et {1} ne sont pas si proches.</BluesNotEnoughFren>
+  <BluesCantReach>{0} ne peut pas rejoindre {1}.</BluesCantReach>
+
+</LanguageData>

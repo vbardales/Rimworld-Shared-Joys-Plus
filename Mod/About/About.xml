@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Shared Joys - All Recreation</name>
+  <author>nelim</author>
+  <packageId>nelim.sharedjoysplus</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <url>https://github.com/vbardales/Rimworld-Shared-Joys-Plus</url>
+  <description>Extends Blues' Shared Joys to every kind of recreation, not just the ones tied to a building that some JoyGiverDef happens to name.
+
+WHY
+
+Shared Joys accepts a building as a hangout spot on one of two conditions: a JoyGiverDef lists its ThingDef in thingDefs, or the building carries an active CompGatherSpot.
+
+But only 9 of RimWorld 1.6's 23 JoyGiverDefs fill in thingDefs. The others find their target another way - by thing group, by comp, through a utility class - so they have nothing to list, and Shared Joys could not see them. Six recreation types out of ten were reachable. Meditative, Reading, Chemical and Gluttonous were not.
+
+BUILDINGS SHARED JOYS USED TO TURN DOWN
+
+- Art. Anything whose CompArt is flagged canBeEnjoyedAsArt, which in vanilla means sculptures. Artistic gravestones and engraved weapons carry CompArt without that flag and are correctly left out.
+- Meditation foci. Meditation spot, throne, anima tree, and any building with a CompMeditationFocus. Royalty only.
+- Graves holding a colonist.
+
+They now appear in "Relax at ...", in invitations, and in autonomous group events, exactly like a billiards table.
+
+One consequence worth knowing: JobDriver_VisitJoyThing reserves its target for a single pawn, so two colonists cannot admire the same sculpture. A group spreads over the other pieces in the same room, within 12 cells - a sculpture garden, a graveyard. Meditation is the one case where the focus is genuinely shared: only the sitting cell changes, so an anima tree can host everyone at once.
+
+RECREATION WITH NOTHING TO CLICK
+
+There is no building to right-click for a walk. Hence a new option on a colonist, "Invite ... to an activity", listing what is actually possible at that moment: walks, skygazing, swimming, snowmen, reading, meditation, prayer, drugs and treats. It works with several colonists selected.
+
+No behaviour is rewritten. The vanilla JoyGiver builds each pawn's job itself; the mod only asks it for several pawns at once, then brings the destinations together where the activity allows it. Walkers and swimmers follow the host's route point by point, skygazers take a free unroofed cell next to the host's. Those drivers reserve nothing, so sharing a route cannot produce a reservation conflict.
+
+The list is built at load time rather than hardcoded: a JoyGiverDef counts as placeless when its giverClass derives from none of JoyGiver_InteractBuilding, JoyGiver_WatchBuilding or JoyGiver_SocialRelax - the three building-anchored families Shared Joys already covers. A mod that adds placeless recreation of its own shows up without any patch.
+
+SETTINGS
+
+Extended buildings and the activity menu can each be switched off, and every activity has its own checkbox, so you can drop what you would rather never be offered.
+
+The thresholds - minimum opinion, maximum recreation level, recreation drain before a shared break - are read straight from Shared Joys' settings. Nothing to set twice.
+
+IT SURVIVES WITHOUT SHARED JOYS
+
+The mod never references Shared Joys' assembly at compile time; everything goes through reflection. If Shared Joys is absent the mod still loads, says so in the log, and the activity menu keeps working on its own. If Shared Joys changes shape in an update, each hook it can no longer find is reported in the log instead of bringing the load down.
+
+WHAT IT DOES NOT DO
+
+Recreation buildings that declare a joyKind without any JoyGiverDef serving them are a different problem: there the giver itself has to be created, at def generation time, and that is not this mod's job. Once such a giver exists, Shared Joys picks the building up on its own and this mod has nothing to add.
+
+Interface in English and French.
+
+IF I GO QUIET
+
+If I do not answer within a reasonable time after being contacted, anyone may freely update this or any other of my mods, including publishing a continuation of it. All credit must be preserved.
+
+AI-GENERATED
+
+This mod's code was written with Claude Code (Anthropic) and its images generated with DALL-E (OpenAI), under human direction, review and testing. Stated openly: designing with these tools is my job.
+
+THANKS
+
+Blues, for Shared Joys. This mod is a companion to it and does nothing on its own.
+Andreas Pardeike for Harmony.
+Claude Code (Anthropic) and DALL-E (OpenAI).
+
+No file from Shared Joys is reproduced here - no def, no texture, no line of code. See ATTRIBUTION.md. This mod is MIT licensed.</description>
+  <modDependencies>
+    <li>
+      <packageId>blues.sharedjoys</packageId>
+      <displayName>Shared Joys</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3719496210</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>blues.sharedjoys</li>
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,13 @@
+# Normalise les fins de ligne dans le depot, en laissant chaque poste garder les siennes.
+* text=auto
+
+*.cs   text diff=csharp
+*.xml  text
+*.md   text
+*.props text
+*.yml  text
+
+# Binaires : ni normalisation, ni diff textuel.
+*.png binary
+*.jpg binary
+*.dll binary

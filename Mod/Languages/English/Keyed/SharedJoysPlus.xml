@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <SJP_ModTitle>Shared Joys - All Recreation</SJP_ModTitle>
+  <SJP_SharedJoysMissing>Shared Joys is not loaded. Only the placeless activity menu is active.</SJP_SharedJoysMissing>
+
+  <SJP_ExtendBuildings>Extend building invitations</SJP_ExtendBuildings>
+  <SJP_ExtendBuildingsDesc>Lets "Relax at ..." and autonomous events use art pieces, meditation foci and graves, which no JoyGiverDef lists by name.</SJP_ExtendBuildingsDesc>
+  <SJP_EnableActivityMenu>Enable the placeless activity menu</SJP_EnableActivityMenu>
+  <SJP_EnableActivityMenuDesc>Adds "Invite ... to an activity" on a colonist, for recreation that has no building to click: walks, skygazing, swimming, reading, meditation, drugs and treats.</SJP_EnableActivityMenuDesc>
+  <SJP_ActivityList>Offered activities:</SJP_ActivityList>
+
+  <SJP_InviteToActivity>Invite {0} to an activity...</SJP_InviteToActivity>
+  <SJP_JustHungOut>{0} has just had a break.</SJP_JustHungOut>
+  <SJP_ActivityUnavailable>{0} (nobody else can right now)</SJP_ActivityUnavailable>
+  <SJP_NoActivity>No activity available right now.</SJP_NoActivity>
+  <SJP_CantDoActivity>{0} can't do that right now: {1}.</SJP_CantDoActivity>
+  <SJP_NobodyJoined>Nobody else could join in: {0}.</SJP_NobodyJoined>
+
+  <SJP_Act_Meditate>Meditate</SJP_Act_Meditate>
+  <SJP_Act_Pray>Pray</SJP_Act_Pray>
+  <SJP_Act_Skygaze>Watch the sky</SJP_Act_Skygaze>
+  <SJP_Act_GoForWalk>Go for a walk</SJP_Act_GoForWalk>
+  <SJP_Act_GoSwimming>Go swimming</SJP_Act_GoSwimming>
+  <SJP_Act_VisitGrave>Visit a grave</SJP_Act_VisitGrave>
+  <SJP_Act_ViewArt>Admire some art</SJP_Act_ViewArt>
+  <SJP_Act_BuildSnowman>Build a snowman</SJP_Act_BuildSnowman>
+  <SJP_Act_VisitSickPawn>Visit the sick</SJP_Act_VisitSickPawn>
+  <SJP_Act_TakeDrug>Share a drug</SJP_Act_TakeDrug>
+  <SJP_Act_EatChocolate>Share a treat</SJP_Act_EatChocolate>
+  <SJP_Act_Reading>Read together</SJP_Act_Reading>
+
+</LanguageData>
