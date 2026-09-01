@@ -1,133 +1,153 @@
-# Shared Joys — tous les loisirs
+# Shared Joys - All Recreation
 
-Mod compagnon de **Shared Joys** de Blues ([Steam 3719496210](https://steamcommunity.com/sharedfiles/filedetails/?id=3719496210)).
-Il ne remplace rien et ne copie aucun fichier : il se charge après lui et complète ce que son
-mécanisme ne pouvait pas atteindre.
+A companion mod for [Shared Joys](https://steamcommunity.com/sharedfiles/filedetails/?id=3719496210)
+by Blues, for RimWorld 1.6. It extends the invitations to every kind of recreation, not just the
+ones tied to a building that some `JoyGiverDef` happens to name.
 
-## Le problème
+It replaces nothing and copies nothing: it loads after Shared Joys and fills in what that mod's
+mechanism could not reach.
 
-Tout Shared Joys tient à une seule fonction, `JoyUtil.IsValidJoyBuilding`, qui n'accepte un
-bâtiment qu'à deux conditions : soit un `JoyGiverDef` **cite son `ThingDef`** dans `<thingDefs>`,
-soit il porte un `CompGatherSpot` actif.
+## The problem
 
-Or sur les 23 `JoyGiverDef` de RimWorld 1.6 (Core + Royalty + Odyssey), **9 seulement remplissent
-`thingDefs`**. Les autres cherchent leur cible autrement — par groupe de choses
-(`ThingRequestGroup.Art`, `.Grave`), par comp (`CompMeditationFocus`), par utilitaire
-(`BookUtility`), ou n'ont aucune cible du tout. Ils n'ont donc rien à lister, et Shared Joys ne
-pouvait pas les voir.
+Shared Joys accepts a building as a hangout spot on one of two conditions: a `JoyGiverDef` lists
+its `ThingDef` in `<thingDefs>`, or the building carries an active `CompGatherSpot`.
 
-| Type de loisir | Avant | Après |
+But of the 23 `JoyGiverDef`s in RimWorld 1.6 (Core + Royalty + Odyssey), **only 9 fill in
+`thingDefs`**. The rest find their target another way — by thing group (`ThingRequestGroup.Art`,
+`.Grave`), by comp (`CompMeditationFocus`), through a utility class (`BookUtility`), or they have
+no target at all. They have nothing to list, so Shared Joys could not see them.
+
+| Recreation type | Before | After |
 |---|---|---|
-| Gaming_Dexterity, Gaming_Cerebral, Television, Telescope, HighCulture | ✅ `thingDefs` | inchangé |
-| Social | ✅ `CompGatherSpot` | inchangé |
-| **Meditative** | ❌ | art, méditation, tombes, promenade, ciel, baignade, bonhomme de neige |
-| **Reading** | ❌ | lecture partagée |
-| **Chemical / Gluttonous** | ❌ | substances et friandises partagées |
+| Gaming_Dexterity, Gaming_Cerebral, Television, Telescope, HighCulture | yes, via `thingDefs` | unchanged |
+| Social | yes, via `CompGatherSpot` | unchanged |
+| **Meditative** | no | art, meditation, graves, walks, skygazing, swimming, snowmen |
+| **Reading** | no | shared reading |
+| **Chemical / Gluttonous** | no | shared drugs and treats |
 
-## Ce que le mod ajoute
+## What it adds
 
-### 1. Des bâtiments que Shared Joys refusait
+### Buildings Shared Joys used to turn down
 
-Trois greffes Harmony en **postfix** sur `Blues.JoyUtil`, toutes passives : elles ne s'expriment
-que là où le mod d'origine a déjà renoncé (résultat faux, tâche nulle, zéro place).
+Three Harmony **postfix** hooks on `Blues.JoyUtil`, all passive: they only speak up where the
+original has already given up (false result, null job, zero spots).
 
-| Greffe | Rôle |
+| Hook | Role |
 |---|---|
-| `IsValidJoyBuilding` | fait accepter l'art, les tombes et les foyers de méditation |
-| `MakeJoyJob` | fabrique la tâche, faute de `JoyGiverDef` pour le faire |
-| `GetAvailableSpots` | annonce le nombre de places, sans quoi les événements autonomes ignorent le lieu |
+| `IsValidJoyBuilding` | makes art, graves and meditation foci acceptable |
+| `MakeJoyJob` | builds the job, since no `JoyGiverDef` will |
+| `GetAvailableSpots` | reports the spot count, without which autonomous events ignore the place |
 
-Ces bâtiments apparaissent donc dans « Relax at ... », dans les invitations, et dans les
-événements autonomes, exactement comme un billard.
+These buildings then show up in "Relax at ...", in invitations and in autonomous events, exactly
+like a billiards table.
 
-**Ce qui est reconnu :**
+**What is recognised:**
 
-- **L'art** — tout `CompArt` dont les props posent `canBeEnjoyedAsArt`. En vanilla, cela ne vise
-  que les sculptures (`SculptureBase`, `CubeSculptureBase` d'Anomaly, et deux defs d'Odyssey et
-  d'Anomaly) : la pierre tombale artistique et les armes ornées portent `CompArt` sans ce
-  drapeau, et restent donc hors du lot.
-- **Les foyers de méditation** — spot de méditation, trône, arbre anima, et tout bâtiment portant
-  un `CompMeditationFocus`. Uniquement si Royalty est actif.
-- **Les tombes** — `Building_Grave` occupée par un colon.
+- **Art** — any `CompArt` whose props set `canBeEnjoyedAsArt`. In vanilla that means sculptures
+  only (`SculptureBase`, Anomaly's `CubeSculptureBase`, and one def each in Odyssey and Anomaly):
+  artistic gravestones and engraved weapons carry `CompArt` without that flag, and stay out.
+- **Meditation foci** — meditation spot, throne, anima tree, and any building with a
+  `CompMeditationFocus`. Royalty only.
+- **Graves** — a `Building_Grave` holding a colonist.
 
-**Le point qui gouverne la répartition du groupe.** `JobDriver_VisitJoyThing` réserve sa cible
-avec `maxPawns 1` : deux pions **ne peuvent pas** admirer la même sculpture ni se recueillir sur
-la même tombe. Le mod répartit donc le groupe sur les pièces voisines de la même salle, dans un
-rayon de 12 cases — un jardin de sculptures, un cimetière. La méditation est le seul des trois cas
-où le foyer est réellement partagé : seule la case d'assise change, et un arbre anima peut
-accueillir tout le monde.
+**The fact that governs how a group is spread.** `JobDriver_VisitJoyThing` reserves its target
+with `maxPawns 1`: two pawns **cannot** admire the same sculpture, nor pay respects at the same
+grave. So a group spreads over the neighbouring pieces in the same room, within 12 cells — a
+sculpture garden, a graveyard. Meditation is the one case of the three where the focus is
+genuinely shared: only the sitting cell changes, so an anima tree can host everyone.
 
-La liste des cibles déjà distribuées est celle que Shared Joys passe lui-même à chaque
-participant (`takenSpots`), complétée ici : rien à synchroniser en plus.
+The list of targets already handed out is the one Shared Joys passes to every participant itself
+(`takenSpots`), extended here: nothing extra to synchronise.
 
-### 2. Des activités sans lieu
+### Recreation with no place to click
 
-Il n'y a **aucun bâtiment à cliquer** pour une promenade. D'où une nouvelle entrée de menu
-contextuel sur un colon : **« Inviter X à une activité... »**, qui ouvre la liste des loisirs
-possibles à cet instant. Fonctionne aussi avec plusieurs colons sélectionnés.
+There is no building to right-click for a walk. Hence a new float menu option on a colonist:
+**"Invite ... to an activity"**, which opens the list of what is actually possible at that moment.
+It works with several colonists selected too.
 
-Aucun comportement n'est réécrit : c'est le `JoyGiver` vanilla lui-même qui fabrique la tâche de
-chaque pion. Le mod se contente de la demander pour plusieurs pions à la fois, puis de rapprocher
-les destinations quand l'activité s'y prête :
+No behaviour is rewritten: the vanilla `JoyGiver` builds each pawn's job itself. The mod only asks
+it for several pawns at once, then brings the destinations together where the activity allows it:
 
-- **promenade et baignade** : les invités reprennent le trajet de l'hôte, point par point ;
-- **contemplation du ciel** : chacun prend une case libre et découverte à côté de celle de l'hôte ;
-- le reste (lecture, bonhomme de neige, substances) : chacun sa cible, c'est la nature de
-  l'activité.
+- **walks and swimming** — the guests take the host's route, point by point;
+- **skygazing** — each takes a free, unroofed cell next to the host's;
+- the rest (reading, snowmen, drugs) — everyone gets their own target, which is the nature of the
+  activity.
 
-Ces trois pilotes ne réservent rien — `TryMakePreToilReservations` y renvoie `true` sans rien
-prendre — donc partager un trajet ne peut pas produire de conflit de réservation.
+None of those three drivers reserve anything — `TryMakePreToilReservations` returns `true` there
+without taking a thing — so sharing a route cannot produce a reservation conflict.
 
-**La liste est construite au chargement**, pas codée en dur : est « sans lieu » tout `JoyGiverDef`
-dont le `giverClass` ne dérive ni de `JoyGiver_InteractBuilding`, ni de `JoyGiver_WatchBuilding`,
-ni de `JoyGiver_SocialRelax` — les trois familles ancrées sur un bâtiment, celles que Shared Joys
-couvre déjà. Un mod tiers qui ajoute un loisir sans lieu apparaît donc tout seul.
+**The list is built at load time**, not hardcoded: a `JoyGiverDef` counts as placeless when its
+`giverClass` derives from none of `JoyGiver_InteractBuilding`, `JoyGiver_WatchBuilding` or
+`JoyGiver_SocialRelax` — the three building-anchored families Shared Joys already covers. A
+third-party mod adding placeless recreation therefore shows up on its own.
 
-On ne filtre **surtout pas** sur `thingDefs` : `EatChocolate` en a une liste et reste une activité
-sans lieu.
+Filtering on `thingDefs` would be **wrong**: `EatChocolate` has a list of them and is still a
+placeless activity.
 
-## Ce que le mod ne fait pas
+## What it does not do
 
-**Les bâtiments de loisir orphelins** — ceux qui portent un `<building><joyKind>` sans qu'aucun
-`JoyGiverDef` ne les serve — ne sont pas traités ici. C'est le domaine de **Joy Rescue**, qui
-fabrique les `JobDef` et `JoyGiverDef` manquants au chargement. Une fois qu'il les a créés, Shared
-Joys les voit sans que ce mod-ci ait à intervenir : les deux se composent, il n'y a rien à
-dupliquer.
+**Orphaned recreation buildings** — those carrying a `<building><joyKind>` that no `JoyGiverDef`
+serves — are not handled here. That is a different problem: the giver itself has to be created, at
+def generation time. Once such a giver exists, Shared Joys picks the building up on its own and
+this mod has nothing to add.
 
-## Réglages
+## Settings
 
-- **Étendre les invitations aux bâtiments** (art, méditation, tombes) — décochable.
-- **Activer le menu des activités sans lieu** — décochable.
-- **Une case par activité**, pour retirer de la liste ce qu'on ne veut pas voir proposer
-  (les substances, typiquement).
+- **Extend building invitations** (art, meditation, graves) — can be switched off.
+- **Enable the placeless activity menu** — can be switched off.
+- **One checkbox per activity**, to drop what you would rather never be offered (drugs, typically).
 
-Les seuils — opinion minimale, niveau de loisir maximal, purge du loisir avant un moment partagé —
-sont lus dans les réglages de Shared Joys : rien à régler deux fois. Si le mod d'origine est
-absent, des valeurs de repli prennent le relais.
+The thresholds — minimum opinion, maximum recreation level, recreation drain before a shared break
+— are read from Shared Joys' own settings. Nothing to set twice. If that mod is absent, fallback
+values take over.
 
-## Robustesse
+## Robustness
 
-Le mod **ne référence pas** l'assemblage de Blues à la compilation. Tout passe par réflexion
-(`AccessTools`). Conséquences :
+The mod **does not reference** Blues' assembly at compile time. Everything goes through reflection
+(`AccessTools`). As a result:
 
-- si Shared Joys est absent, le mod se charge quand même, journalise la situation, et **le menu
-  des activités reste utilisable seul** ;
-- si Shared Joys change de forme lors d'une mise à jour Steam, les greffes manquantes sont
-  signalées une par une dans le journal au lieu de faire tomber le chargement.
+- if Shared Joys is absent, the mod still loads, says so in the log, and **the activity menu stays
+  usable on its own**;
+- if Shared Joys changes shape in a Steam update, each missing hook is reported in the log instead
+  of bringing the load down.
 
-## Construction
+It always reports success too, not just failure: a silent mod is indistinguishable from a broken
+one.
 
 ```
-dotnet build SharedJoysPlus/Source/SharedJoysPlus.csproj -c Release
+[Shared Joys+] 3/3 hooks applied, 12 placeless activities found: BuildSnowman, EatChocolate, ...
 ```
 
-Sortie directe dans `SharedJoysPlus/Assemblies/`. Une jonction NTFS relie
-`RimWorld\Mods\SharedJoysPlus` à ce dossier : aucune copie à faire.
+## Building
 
-## Ordre de chargement
+```
+dotnet build Source/SharedJoysPlus.csproj -c Release
+```
 
-Après **Shared Joys**. Le `loadAfter` de `About.xml` s'en charge.
+Output goes straight to `Mod/Assemblies/`. Reference assemblies come from NuGet
+(`Krafs.Rimworld.Ref`), so no RimWorld installation is needed to compile — which is also why CI
+can build it.
 
-Sous licence MIT. Ce mod ne contient aucun fichier de Shared Joys — ni def, ni texture, ni ligne
-de code — et ne référence même pas sa DLL à la compilation : il est publiable tel quel. Voir
+## Layout
+
+```
+Mod/            what ships to the Workshop
+Source/         C# sources, never published
+Art/            full-resolution source images
+.build/         build intermediates, kept out of Mod/ on purpose
+```
+
+`SteamUGC.SetItemContent` uploads the mod folder as it stands, with no filtering of any kind: the
+only way not to publish the sources is for them not to be in there. Hence the split, and hence the
+`Directory.Build.props` that pushes intermediates out — it has to be that file, since NuGet
+restore reads the property before the `.csproj`.
+
+## Load order
+
+After **Shared Joys**. The `loadAfter` in `About.xml` takes care of it. Harmony is required.
+
+## Licence
+
+MIT, see [LICENSE](LICENSE). This mod contains no file from Shared Joys — no def, no texture, no
+line of code — and does not even reference its DLL at compile time. See
 [ATTRIBUTION.md](ATTRIBUTION.md).
