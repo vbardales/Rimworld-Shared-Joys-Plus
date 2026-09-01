@@ -2,46 +2,46 @@
 
 ## Shared Joys
 
-- **Auteur :** Blues
-- **Source :** Steam Workshop [3719496210](https://steamcommunity.com/sharedfiles/filedetails/?id=3719496210),
+- **Author:** Blues
+- **Source:** Steam Workshop [3719496210](https://steamcommunity.com/sharedfiles/filedetails/?id=3719496210),
   `blues.sharedjoys`, RimWorld 1.6.
-- **Licence :** aucune déclarée. Aucun dépôt public : ni `About.xml`, ni la DLL, ni la page
-  Workshop ne portent de lien vers des sources.
+- **Licence:** none declared. No public repository either: neither `About.xml`, nor the assembly,
+  nor the Workshop page carries a link to sources.
 
-**Rien de ce mod n'est repris ici.** Pas une def, pas une texture, pas une ligne de code. Ce mod-ci
-ne contient que du code écrit pour l'occasion, et se greffe sur celui de Blues par Harmony, en
-postfix uniquement.
+**Nothing from that mod is reused here.** Not a def, not a texture, not a line of code. This mod
+contains only code written for the purpose, and grafts onto Blues' code through Harmony, in
+postfix only.
 
-Deux emprunts par référence, jamais par copie :
+Two things are borrowed by reference, never by copy:
 
-| Emprunt | Pourquoi |
+| Borrowed | Why |
 |---|---|
-| `Blues_SharedJoy_Thought`, `Blues_InviteHangout` | Récupérées par `DefDatabase.GetNamed(..., false)`. Déclarer nos propres pensées empilerait deux souvenirs concurrents pour le même événement, et le `stackLimit` de chacune serait faux. |
-| `Blues.JoyousSet` (seuils, purge du loisir) | Lus par réflexion. Sans ça, le joueur règlerait les mêmes seuils à deux endroits, avec des résultats différents selon le chemin emprunté. |
+| `Blues_SharedJoy_Thought`, `Blues_InviteHangout` | Fetched with `DefDatabase.GetNamed(..., false)`. Declaring our own thoughts would stack two competing memories for the same event, and the `stackLimit` of each would be wrong. |
+| `Blues.JoyousSet` (thresholds, recreation drain) | Read by reflection. Without this, the player would set the same thresholds in two places, with different results depending on which path was taken. |
 
-Les trois clés de traduction françaises reproduites dans `Languages/French/Keyed/` —
-`BluesAlreadySatisfied`, `BluesNotEnoughFren`, `BluesCantReach` — sont des **traductions
-originales** des textes anglais de Blues, pas une copie de son fichier. Le mod d'origine n'est
-livré qu'en anglais ; sans elles, ces trois messages resteraient en anglais dans une partie
-française.
+The three French translation keys in `Languages/French/Keyed/` — `BluesAlreadySatisfied`,
+`BluesNotEnoughFren`, `BluesCantReach` — are **original translations** of Blues' English strings,
+not a copy of his file. The original mod ships in English only; without them, those three messages
+would stay in English in a French game.
 
-**Si Blues met son mod à jour**, ce mod n'a rien à resynchroniser : il ne suit que trois
-signatures de méthode, et signale dans le journal celles qu'il ne retrouve plus.
+**If Blues updates his mod**, this one has nothing to resynchronise: it follows three method
+signatures only, and reports in the log any it can no longer find.
 
 ## RimWorld
 
-Les classes vanilla dont le mod se sert (`JoyGiver`, `MeditationUtility`, `JobDriver_VisitJoyThing`,
-`FloatMenuOptionProvider`) appartiennent à **Ludeon Studios**. Elles sont appelées, jamais copiées.
+The vanilla classes this mod relies on (`JoyGiver`, `MeditationUtility`, `JobDriver_VisitJoyThing`,
+`FloatMenuOptionProvider`) belong to **Ludeon Studios**. They are called, never copied.
 
 ## Licence
 
-Le code de ce mod est sous MIT (`LICENSE`). Il ne couvre évidemment pas le mod de Blues, dont il
-dépend.
+This mod's code is MIT licensed (`LICENSE`). That obviously does not extend to Blues' mod, which
+it depends on.
 
-**Publiable tel quel.** L'absence de licence sur le mod de Blues n'y fait pas obstacle : greffer
-Harmony sur un mod tiers sans en reprendre aucun fichier ne relève pas de sa licence, et c'est la
-pratique courante du milieu. Ce mod ne sert à rien sans le sien, mais il ne le redistribue pas.
+**Publishable as it stands.** The absence of a licence on Blues' mod is no obstacle: hooking
+Harmony onto a third-party mod without taking any of its files does not fall under its licence,
+and it is standard practice in this community. This mod is useless without his, but it does not
+redistribute it.
 
-Seule réserve à garder en tête : les trois clés françaises ci-dessus traduisent ses textes anglais.
-Si Blues livre un jour sa propre traduction française, elles produiront des avertissements de clé
-en double, et il faudra les retirer.
+One reservation worth keeping in mind: the three French keys above translate his English strings.
+If Blues ever ships his own French translation, they will produce duplicate-key warnings and will
+have to be removed.
