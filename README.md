@@ -104,6 +104,31 @@ the log.
   table, a builder repairing it, a cleaner — each one made the spot look full and blocked the
   shared break. Only reservations whose job matches the recreation are counted now.
 
+### It tells you why, instead of guessing
+
+Shared Joys has one message for every placement failure — *"Not enough space for everyone to
+chill"* — and it sends you looking for room when what is usually missing is a chair. The extension
+above made that worse: one sculpture and two colonists produced the same text, when the real reason
+is that an artwork can only be admired by one pawn at a time.
+
+The message is not doubled, it is **replaced**: the reason is worked out when job creation fails,
+then substituted inside `JoyUtil.Notify`. That method is only ever called on player-initiated paths
+— every call site in Shared Joys is guarded by `if (manual)` — so a failed autonomous event stays as
+quiet as before.
+
+| Instead of "not enough space" | You get |
+|---|---|
+| chess, Ur, poker, go boards… | *needs a free chair on one of its four sides — one per player* |
+| television | *needs a free chair to watch from — one per viewer* |
+| a single sculpture, several pawns | *only one colonist can admire it at a time* |
+| a single grave, several pawns | *only one colonist can pay respects at a time* |
+| a meditation focus with no room | *no free spot to sit and meditate around it* |
+
+The chair case is not a bug in either mod, incidentally — it is vanilla. `requireChair` defaults to
+**true** and no `JoyGiverDef` in the base game sets it to false, so
+`JoyGiver_InteractBuildingSitAdjacent.TryGivePlayJob` breaks out before it ever tries the bare
+ground. Colonists don't play chess standing up. The message just never said so.
+
 A third problem is reported but **not** repaired, because it cannot be from the outside:
 `JoyJobFactory` caches the `MethodInfo` of two *private* vanilla methods,
 `JoyGiver_InteractBuilding.CanInteractWith` and `TryGivePlayJob`. If a RimWorld version renames

@@ -119,6 +119,29 @@ namespace SharedJoysPlus
             return best;
         }
 
+        /// <summary>
+        /// Y aurait-il une cible valable si aucune n'etait deja distribuee ? Sert au diagnostic :
+        /// si oui alors que <see cref="TryMakeJob"/> a renvoye null, c'est que tout est pris — ce
+        /// qui n'est pas du tout la meme chose que « rien d'utilisable ici ».
+        /// </summary>
+        public static bool HasAnyTarget(Pawn pawn, Building anchor)
+        {
+            if (pawn == null || anchor == null || !anchor.Spawned) return false;
+            List<LocalTargetInfo> nothingTaken = new List<LocalTargetInfo>();
+
+            switch (KindOf(anchor))
+            {
+                case ExtJoyKind.Art:
+                    return PickFreeTarget(pawn, anchor, nothingTaken, ThingRequestGroup.Art, CanViewArt) != null;
+                case ExtJoyKind.Grave:
+                    return PickFreeTarget(pawn, anchor, nothingTaken, ThingRequestGroup.Grave, CanVisitGrave) != null;
+                case ExtJoyKind.Meditation:
+                    return MakeMeditationJob(pawn, anchor, nothingTaken) != null;
+                default:
+                    return false;
+            }
+        }
+
         static bool CanViewArt(Pawn pawn, Thing t)
         {
             if (!IsArt(t) || t.Faction != Faction.OfPlayer || t.Fogged()) return false;

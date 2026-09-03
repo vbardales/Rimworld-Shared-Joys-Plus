@@ -3,6 +3,32 @@
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 Ce fichier sert au dépôt et à rédiger les notes de version Steam ; RimWorld ne l'affiche pas en jeu.
 
+## [1.0.2] — 2026-09-03
+
+### Ajouté
+
+- **Le message d'échec dit maintenant la vraie raison.** Shared Joys n'en a qu'un pour tous les
+  échecs de lieu — « Not enough space for everyone to chill » — et il envoie chercher de la place là
+  où il manque le plus souvent une chaise. L'extension aggravait le cas : une seule sculpture pour
+  deux colons produisait le même texte.
+
+  | Au lieu de « pas assez de place » | On lit |
+  |---|---|
+  | échecs, Ur, poker, plateaux de mods | il faut une chaise libre sur l'un des quatre côtés |
+  | télévision | il faut une chaise libre pour s'y asseoir |
+  | une sculpture, plusieurs pions | elle ne se contemple qu'à un à la fois |
+  | une tombe, plusieurs pions | on ne s'y recueille qu'à un |
+  | foyer de méditation saturé | aucune place libre autour |
+
+  Le message n'est pas doublé mais **remplacé**, par substitution dans `JoyUtil.Notify`. Cette
+  méthode n'est appelée que sur les chemins manuels chez Blues — tous ses appels sont gardés par
+  `if (manual)` — donc un événement autonome raté reste silencieux comme avant.
+
+  À noter : le cas de la chaise n'est **pas un bug**, ni chez Blues ni chez nous. `requireChair`
+  vaut vrai par défaut et aucun `JoyGiverDef` du jeu de base ne le passe à faux, si bien que
+  `JoyGiver_InteractBuildingSitAdjacent.TryGivePlayJob` sort avant d'essayer le sol. Des colons ne
+  jouent pas aux échecs debout — le message ne le disait simplement pas.
+
 ## [1.0.1] — 2026-09-03
 
 ### Corrigé

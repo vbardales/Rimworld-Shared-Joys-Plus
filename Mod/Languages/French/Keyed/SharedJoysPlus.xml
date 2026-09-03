@@ -17,6 +17,12 @@
   <SJP_CantDoActivity>{0} ne peut pas s'y mettre : {1}.</SJP_CantDoActivity>
   <SJP_NobodyJoined>Personne n'a pu suivre : {0}.</SJP_NobodyJoined>
 
+  <SJP_ArtAllTaken>{0} ne se contemple qu'à un à la fois. Il faut une œuvre par participant, dans la même pièce.</SJP_ArtAllTaken>
+  <SJP_GraveAllTaken>On ne se recueille qu'à un devant {0}. Il faut une tombe par participant, à proximité l'une de l'autre.</SJP_GraveAllTaken>
+  <SJP_NoMeditationSpot>Aucune place libre pour s'asseoir et méditer autour de {0}.</SJP_NoMeditationSpot>
+  <SJP_NeedsChairBeside>{0} demande une chaise libre sur l'un de ses quatre côtés — une par joueur.</SJP_NeedsChairBeside>
+  <SJP_NeedsChairToWatch>{0} demande une chaise libre pour s'y asseoir — une par spectateur.</SJP_NeedsChairToWatch>
+
   <SJP_Act_Meditate>Méditer</SJP_Act_Meditate>
   <SJP_Act_Pray>Prier</SJP_Act_Pray>
   <SJP_Act_Skygaze>Contempler le ciel</SJP_Act_Skygaze>

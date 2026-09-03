@@ -39,6 +39,8 @@ namespace SharedJoysPlus
                 new[] { typeof(Building), typeof(Pawn) }, nameof(SharedJoysFixes.IsValidChair_Prefix));
             PatchFix(harmony, AccessTools.TypeByName("Blues.JoyJobFactory"), "FreeParticipantSlots",
                 new[] { typeof(Building), typeof(JoyGiverDef) }, nameof(SharedJoysFixes.FreeParticipantSlots_Prefix));
+            PatchFix(harmony, BluesBridge.JoyUtilType, "Notify",
+                new[] { typeof(string), typeof(LookTargets) }, nameof(Notify_Prefix), typeof(HarmonyPatches));
             SharedJoysFixes.ReportReflectionHealth();
 
             if (patched < 3)
@@ -55,7 +57,8 @@ namespace SharedJoysPlus
         /// Pose un correctif en prefix. Son absence n'est pas un echec du mod : le bug vise a
         /// peut-etre deja ete corrige en amont, ou la methode renommee. On le dit, et on continue.
         /// </summary>
-        static void PatchFix(Harmony harmony, System.Type type, string methodName, System.Type[] args, string prefixName)
+        static void PatchFix(Harmony harmony, System.Type type, string methodName, System.Type[] args,
+                             string prefixName, System.Type patchHost = null)
         {
             MethodInfo original = type == null ? null : AccessTools.Method(type, methodName, args);
             if (original == null)
@@ -64,7 +67,7 @@ namespace SharedJoysPlus
                             "Shared Joys may have fixed it upstream.");
                 return;
             }
-            harmony.Patch(original, prefix: new HarmonyMethod(typeof(SharedJoysFixes), prefixName));
+            harmony.Patch(original, prefix: new HarmonyMethod(patchHost ?? typeof(SharedJoysFixes), prefixName));
         }
 
         static int Patch(Harmony harmony, string methodName, System.Type[] args, string postfixName)
@@ -94,8 +97,21 @@ namespace SharedJoysPlus
         /// <summary>Fabrique la tache quand aucun JoyGiverDef ne cite ce batiment.</summary>
         public static void MakeJoyJob_Postfix(Pawn pawn, Building b, List<LocalTargetInfo> takenSpots, ref Job __result)
         {
-            if (__result != null || !Enabled || pawn == null || b == null) return;
-            __result = ExtendedBuildingJoy.TryMakeJob(pawn, b, takenSpots);
+            if (__result != null || pawn == null || b == null) return;
+            if (Enabled) __result = ExtendedBuildingJoy.TryMakeJob(pawn, b, takenSpots);
+            // Le diagnostic ne depend pas de l'extension : le cas de la chaise manquante concerne
+            // les plateaux du jeu de base, meme quand nos batiments etendus sont desactives.
+            if (__result == null) FailureDiagnosis.Note(pawn, b);
+        }
+
+        /// <summary>
+        /// Remplace le message d'echec generique de Shared Joys par la vraie raison quand on la
+        /// connait. <c>Notify</c> n'est appelee que sur les chemins manuels chez lui, donc un
+        /// evenement autonome rate reste silencieux comme avant.
+        /// </summary>
+        public static void Notify_Prefix(ref string text)
+        {
+            FailureDiagnosis.TryTakeOver(ref text);
         }
 
         /// <summary>Annonce le nombre de places, sans quoi les evenements autonomes ignorent le lieu.</summary>
