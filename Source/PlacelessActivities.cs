@@ -48,9 +48,16 @@ namespace SharedJoysPlus
         /// On ne filtre surtout pas sur <c>thingDefs</c> : le chocolat en a une liste, et reste
         /// une activite sans lieu.
         /// </summary>
+        /// <remarks>
+        /// Ne pas exiger de <c>jobDef</c> : <c>TakeDrug</c> et <c>EatChocolate</c> n'en declarent
+        /// aucun, parce que <c>JoyGiver_Ingest.CreateIngestJob</c> fabrique un <c>JobDefOf.Ingest</c>
+        /// lui-meme. Les exiger revenait a promettre les substances et les friandises dans la fiche
+        /// et a ne jamais les proposer. On n'a de toute facon pas besoin du champ : c'est le worker
+        /// vanilla qui construit la tache.
+        /// </remarks>
         static bool IsPlaceless(JoyGiverDef d)
         {
-            if (d == null || d.jobDef == null || d.giverClass == null) return false;
+            if (d == null || d.giverClass == null) return false;
             if (typeof(JoyGiver_InteractBuilding).IsAssignableFrom(d.giverClass)) return false;
             if (typeof(JoyGiver_WatchBuilding).IsAssignableFrom(d.giverClass)) return false;
             if (typeof(JoyGiver_SocialRelax).IsAssignableFrom(d.giverClass)) return false;
@@ -96,7 +103,7 @@ namespace SharedJoysPlus
         public static bool TryStart(List<Pawn> group, JoyGiverDef giver, out string reason)
         {
             reason = null;
-            if (group.NullOrEmpty() || giver == null || giver.jobDef == null) return false;
+            if (group.NullOrEmpty() || giver == null) return false;
 
             Pawn host = group[0];
             float hostJoyBefore = host.needs?.joy?.CurLevel ?? 0f;

@@ -3,6 +3,24 @@
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 Ce fichier sert au dépôt et à rédiger les notes de version Steam ; RimWorld ne l'affiche pas en jeu.
 
+## [1.0.1] — 2026-09-03
+
+### Corrigé
+
+- **Les substances et les friandises n'étaient jamais proposées**, alors que la fiche les annonce.
+  `TakeDrug` et `EatChocolate` ne déclarent aucun `jobDef` — `JoyGiver_Ingest.CreateIngestJob`
+  fabrique son `JobDefOf.Ingest` lui-même — et le filtre des activités sans lieu exigeait ce champ.
+  Il n'a jamais servi : c'est le fournisseur vanilla qui construit la tâche. Le premier chargement
+  en jeu annonçait 11 activités au lieu de 13.
+
+### Vérifié en jeu
+
+Premier chargement avec Shared Joys actif : les trois greffes se posent
+(`3/3 hooks applied`), et `JoyGiver_InteractBuilding.CanInteractWith` et `TryGivePlayJob` se
+résolvent bien en 1.6.4871 — l'avertissement prévu pour leur disparition ne s'est pas déclenché.
+`Joy_BathingAtDrumBath`, fourni par un mod tiers, apparaît seul dans la liste des activités sans
+lieu : la déduction au chargement fonctionne comme prévu.
+
 ## [1.0.0] — 2026-09-03
 
 Première version. RimWorld 1.6. Mod compagnon de **Shared Joys** de Blues
