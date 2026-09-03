@@ -3,7 +3,7 @@
 Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/).
 Ce fichier sert au dépôt et à rédiger les notes de version Steam ; RimWorld ne l'affiche pas en jeu.
 
-## [1.0.0] — non publié
+## [1.0.0] — 2026-09-03
 
 Première version. RimWorld 1.6. Mod compagnon de **Shared Joys** de Blues
 ([3719496210](https://steamcommunity.com/sharedfiles/filedetails/?id=3719496210)).
