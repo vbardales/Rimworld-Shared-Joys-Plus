@@ -62,7 +62,7 @@ WHAT IT DOES NOT DO
 
 Recreation buildings that declare a joyKind without any JoyGiverDef serving them are a different problem: there the giver itself has to be created, at def generation time, and that is not this mod's job. Once such a giver exists, Shared Joys picks the building up on its own and this mod has nothing to add.
 
-Interface in English and French.
+Interface in English and French. Shared Joys itself is translated into French too, since it ships in English only.
 
 IF I GO QUIET
 

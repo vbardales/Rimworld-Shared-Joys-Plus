@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Traduction française des clés de Blues' Shared Joys (blues.sharedjoys), qui ne fournit
+       que l'anglais.
+
+       POURQUOI ICI ET PAS DANS UN MOD DE TRADUCTION À PART. RimWorld fusionne les données
+       Keyed de tous les mods actifs pour la langue courante. Ce mod-ci se charge après Shared
+       Joys, dont il dépend, donc ces entrées prennent le dessus. Et comme Shared Joys ne
+       fournit aucun français, il n'y a même pas de conflit à arbitrer.
+
+       LE FICHIER PORTE LE NOM DE SA SOURCE, pas le nôtre : on voit d'un coup d'œil d'où
+       viennent ces clés, et le supprimer suffit à revenir à l'anglais.
+
+       FRAGILITÉ CONNUE : si Blues renomme ou ajoute des clés, celles-ci deviennent muettes
+       sans rien signaler. C'est le prix d'une traduction hébergée chez le voisin. -->
+
+  <BluesJoyMain>Blues' Shared Joys</BluesJoyMain>
+
+  <BluesEnableMenus>Activer les menus contextuels pour les invitations manuelles</BluesEnableMenus>
+
+  <BluesEnableAuto>Activer les événements autonomes</BluesEnableAuto>
+  <BluesEnableAutoDesc>Laisse les colons organiser des sorties de groupe et emporter leur amoureux dans leurs bras d'eux-mêmes.</BluesEnableAutoDesc>
+
+  <!-- Les six refus. C'est celui-ci, BluesNoRoomForJoy, qui s'affichait en anglais en pleine
+       partie française et qui a lancé toute cette recherche. -->
+  <BluesAlreadySatisfied>{0} est déjà diverti.</BluesAlreadySatisfied>
+  <BluesNotEnoughLove>{0} et {1} n'en sont pas encore là.</BluesNotEnoughLove>
+  <BluesNotEnoughFren>{0} et {1} ne sont pas si proches.</BluesNotEnoughFren>
+  <BluesNoJoySpot>Ce n'est pas un endroit où l'on s'amuse.</BluesNoJoySpot>
+  <BluesNoRoomForJoy>Pas assez de place pour que tout le monde s'installe.</BluesNoRoomForJoy>
+  <BluesCantReach>{0} ne peut pas atteindre {1}.</BluesCantReach>
+
+  <BluesRelaxAt>Se détendre à {0}</BluesRelaxAt>
+  <BluesInviteTo>Inviter {0} à se détendre à...</BluesInviteTo>
+  <!-- L'original dit « Sweep {0} off {1} feet », où {1} est le possessif anglais. Le français
+       n'en a pas besoin : l'argument reste passé mais inutilisé, ce qui ne pose aucun problème
+       au formateur. -->
+  <BluesCarryLoverTo>Emporter {0} dans ses bras jusqu'à...</BluesCarryLoverTo>
+
+  <BluesJoyDrainTo>Abaisser les niveaux de loisir à : {0} %</BluesJoyDrainTo>
+  <BluesDontDrain>Ne pas vider les besoins de loisir</BluesDontDrain>
+  <BluesJoyDrainToDesc>Avant un événement partagé, le loisir est abaissé à cette valeur pour que les colons restent ensemble plus longtemps avant de se lasser.\nCeux qui sont déjà en dessous ne sont pas touchés. </BluesJoyDrainToDesc>
+
+  <BluesMaxRecToTrigger>Loisir maximal pour accepter une invitation manuelle : {0} %</BluesMaxRecToTrigger>
+  <BluesMaxRecToTriggerDesc>Au-dessus de ce niveau de loisir, un colon refuse les invitations manuelles.</BluesMaxRecToTriggerDesc>
+  <BluesMaxRecAutoTrigger>Loisir maximal pour les événements autonomes : {0} %</BluesMaxRecAutoTrigger>
+  <BluesMaxRecAutoTriggerDesc>Au-dessus de ce niveau de loisir, un colon est écarté des événements autonomes.\nNe s'applique que si l'abaissement du loisir est désactivé.</BluesMaxRecAutoTriggerDesc>
+
+  <BluesNeedFren>Amitié minimale pour inviter : {0}</BluesNeedFren>
+  <BluesNeedFrenDesc>Les deux colons doivent s'apprécier au moins à ce point pour que l'un invite l'autre. Vaut pour les invitations manuelles comme pour les événements autonomes.</BluesNeedFrenDesc>
+  <BluesNeedLove>Romance minimale pour emporter dans ses bras : {0}</BluesNeedLove>
+  <BluesNeedLoveDesc>Les deux amoureux doivent s'apprécier au moins à ce point pour que l'un porte l'autre. Vaut pour les ordres manuels comme pour les portés autonomes.</BluesNeedLoveDesc>
+
+  <BluesLoverCarryPlay>Les amoureux s'emportent vers les sorties : {0} %</BluesLoverCarryPlay>
+  <BluesLoverCarryPlayOff>Les amoureux s'emportent vers les sorties : désactivé</BluesLoverCarryPlayOff>
+  <BluesLoverCarryBed>Les amoureux s'emportent au lit : {0} %</BluesLoverCarryBed>
+  <BluesLoverCarryBedOff>Les amoureux s'emportent au lit : désactivé</BluesLoverCarryBedOff>
+  <BluesLoverCarryPlayDesc>Probabilité qu'un colon porte son amoureux jusqu'au lieu de détente au lieu d'y aller à pied.\nLa probabilité finale est cette valeur multipliée par la plus faible des deux opinions.</BluesLoverCarryPlayDesc>
+  <BluesLoverCarryBedDesc>Quand un colon rejoint le lit qu'il partage avec son amoureux, probabilité qu'il fasse demi-tour, aille le chercher et le porte au lit. Tirée une fois par coucher et par colon.\nLa probabilité finale est cette valeur multipliée par la plus faible des deux opinions. Ne se déclenche jamais pendant les heures de travail de l'amoureux, s'il est déjà couché, ou si la colonie est en danger.</BluesLoverCarryBedDesc>
+
+  <BluesScheduleJoy>Déclencher les événements de groupe pendant les heures « Loisir »</BluesScheduleJoy>
+  <BluesScheduleJoyDesc>Les colons dont l'emploi du temps indique Loisir peuvent lancer ou rejoindre un événement autonome.</BluesScheduleJoyDesc>
+  <BluesScheduleAll>Déclencher les événements de groupe pendant les heures « Tout »</BluesScheduleAll>
+  <BluesScheduleAllDesc>Les colons dont l'emploi du temps indique Tout peuvent lancer ou rejoindre un événement autonome, en interrompant le travail ordinaire.\nLes urgences, les ordres du joueur, les rituels et les caravanes ne sont jamais interrompus.</BluesScheduleAllDesc>
+
+  <BluesGroupJoysPerDay>Événements de groupe visés par jour : {0}</BluesGroupJoysPerDay>
+  <BluesGroupJoysPerDayDesc>Nombre d'événements autonomes que la colonie vise chaque jour, répartis sur les heures autorisées ci-dessous.</BluesGroupJoysPerDayDesc>
+  <BluesActiveHours>Heures autorisées pour les événements autonomes :</BluesActiveHours>
+  <BluesActiveHoursDesc>Clic gauche sur une heure pour l'autoriser, clic droit pour l'interdire.\nLes portés au lit suivent simplement l'heure du coucher.</BluesActiveHoursDesc>
+
+  <BluesRequireProximity>Distance maximale pour inviter : {0} cases</BluesRequireProximity>
+  <BluesRequireProximityDesc>Distance à laquelle deux colons peuvent encore s'inviter, sauf s'ils se trouvent déjà dans la même pièce.</BluesRequireProximityDesc>
+  <BluesInfiniteRange>Distance maximale pour inviter : illimitée</BluesInfiniteRange>
+  <BluesNoRange>Pas d'invitation en dehors d'une même pièce fermée</BluesNoRange>
+
+  <BluesRoomPickiness>Exigence sur le lieu de détente : {0} %</BluesRoomPickiness>
+  <BluesRoomPickinessOff>Exigence sur le lieu de détente : désactivée</BluesRoomPickinessOff>
+  <BluesRoomPickinessDesc>Poids de la pièce dans le choix du lieu de détente.\n0 % : n'importe quel endroit utilisable, au hasard. Plus haut : privilégie les salles de loisir, les pièces impressionnantes et l'extérieur par beau temps, et évite les chambres et les hôpitaux.\nLes prisons ne sont jamais utilisées.</BluesRoomPickinessDesc>
+
+  <BluesRespectAreas>Respecter les zones autorisées</BluesRespectAreas>
+  <BluesRespectAreasDesc>Les événements autonomes n'enverront pas un colon hors de sa zone autorisée.\nLes invitations manuelles l'ignorent.</BluesRespectAreasDesc>
+
+</LanguageData>

@@ -36,9 +36,8 @@
   <SJP_Act_EatChocolate>Partager une friandise</SJP_Act_EatChocolate>
   <SJP_Act_Reading>Lire ensemble</SJP_Act_Reading>
 
-  <!-- Clés de Shared Joys que ce mod réutilise : le mod d'origine n'est livré qu'en anglais. -->
-  <BluesAlreadySatisfied>{0} est déjà diverti.</BluesAlreadySatisfied>
-  <BluesNotEnoughFren>{0} et {1} ne sont pas si proches.</BluesNotEnoughFren>
-  <BluesCantReach>{0} ne peut pas rejoindre {1}.</BluesCantReach>
+  <!-- Les clés de Shared Joys lui-même vivent dans BluesSharedJoys.xml, à côté : ce fichier-ci
+       ne porte que les nôtres. Les y laisser aussi produisait trois doublons, RimWorld fusionnant
+       les données Keyed de tous les mods actifs pour une même langue. -->
 
 </LanguageData>
