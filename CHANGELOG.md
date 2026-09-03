@@ -34,8 +34,9 @@ foyer est réellement partagé : seule la case d'assise change.
 
 ### Deux correctifs à Shared Joys lui-même
 
-Contrairement aux greffes ci-dessus, ceux-ci **remplacent** un comportement : ils ont donc leur
-propre interrupteur.
+Contrairement aux greffes ci-dessus, ceux-ci **remplacent** un comportement. Ils n'ont pas
+d'interrupteur : si Blues corrige en amont, le prefix calcule le même résultat que lui, et s'il
+change une signature le correctif est ignoré avec une ligne de journal.
 
 - `JoyUtil.IsValidChair` reconnaissait un siège par son nom : en plus de `building.isSittable`, il
   acceptait tout `defName` contenant « bench » ou « seat ». Étant un **ou**, l'heuristique

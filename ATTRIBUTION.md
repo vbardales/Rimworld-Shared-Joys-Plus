@@ -16,9 +16,10 @@ and the description says so in its first line.
 contains only code written for the purpose, and grafts onto Blues' code through Harmony.
 
 The extension hooks are **postfixes only**, and passive: they speak up where his code has already
-given up. The two bug fixes are **prefixes that replace a behaviour** — a different thing, so they
-carry their own switch in the settings, and each one documents in the source why the original is
-wrong, not merely what it does instead.
+given up. The two bug fixes are **prefixes that replace a behaviour** — a different thing, and each
+one documents in the source why the original is wrong, not merely what it does instead. If Blues
+fixes either upstream, the prefix ends up computing the same answer he does; if he changes a
+signature, the patch is skipped and says so in the log.
 
 Two things are borrowed by reference, never by copy:
 

@@ -8,8 +8,6 @@
   <SJP_ExtendBuildingsDesc>Lets "Relax at ..." and autonomous events use art pieces, meditation foci and graves, which no JoyGiverDef lists by name.</SJP_ExtendBuildingsDesc>
   <SJP_EnableActivityMenu>Enable the placeless activity menu</SJP_EnableActivityMenu>
   <SJP_EnableActivityMenuDesc>Adds "Invite ... to an activity" on a colonist, for recreation that has no building to click: walks, skygazing, swimming, reading, meditation, drugs and treats.</SJP_EnableActivityMenuDesc>
-  <SJP_FixBugs>Fix Shared Joys' own bugs</SJP_FixBugs>
-  <SJP_FixBugsDesc>Two corrections applied on top of Shared Joys: a seat is recognised by building.isSittable alone, instead of also matching any defName containing "bench" or "seat" (which catches research and tailoring benches); and the free-slot count on a joy building ignores reservations belonging to other jobs, so a hauler or a repairer no longer makes the spot look full.\nTurn this off if Shared Joys fixes them upstream.</SJP_FixBugsDesc>
   <SJP_ActivityList>Offered activities:</SJP_ActivityList>
 
   <SJP_InviteToActivity>Invite {0} to an activity...</SJP_InviteToActivity>

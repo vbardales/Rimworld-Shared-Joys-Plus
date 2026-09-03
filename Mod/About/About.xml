@@ -35,7 +35,7 @@ The list is built at load time rather than hardcoded: a JoyGiverDef counts as pl
 
 TWO FIXES TO SHARED JOYS ITSELF
 
-Unlike the hooks above, these replace a behaviour, so they have their own switch - turn them off if Blues fixes them upstream.
+Unlike the hooks above, these replace a behaviour. If Blues fixes either upstream the patch simply computes the same answer he does, and if he changes a signature it is skipped with a line in the log.
 
 - JoyUtil.IsValidChair recognised a seat by name: on top of building.isSittable it also accepted any defName containing "bench" or "seat". Being an or, that widened nothing useful and only added false positives - in vanilla alone it catches seven workbenches, research and tailoring benches included. A colonist could be sent to "sit" on a research bench.
 - JoyJobFactory.FreeParticipantSlots counted every reservation held on the building, whatever the job, and subtracted it from joyMaxParticipants. A hauler taking something off the table, a builder repairing it, a cleaner - each made the spot look full and blocked the shared break.
@@ -44,7 +44,7 @@ A third problem is reported but not repaired, because it cannot be from the outs
 
 SETTINGS
 
-Extended buildings, the activity menu and the fixes can each be switched off, and every activity has its own checkbox, so you can drop what you would rather never be offered.
+Extended buildings and the activity menu can each be switched off, and every activity has its own checkbox, so you can drop what you would rather never be offered.
 
 The thresholds - minimum opinion, maximum recreation level, recreation drain before a shared break - are read straight from Shared Joys' settings. Nothing to set twice.
 

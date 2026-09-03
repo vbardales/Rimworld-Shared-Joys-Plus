@@ -9,18 +9,16 @@ namespace SharedJoysPlus
     /// </summary>
     /// <remarks>
     /// A la difference des trois greffes de <see cref="HarmonyPatches"/>, qui sont passives et ne
-    /// parlent que la ou l'original a renonce, celles-ci <b>remplacent</b> un comportement. Elles
-    /// sont donc toutes coupables depuis les reglages, et chacune porte ici la raison pour laquelle
-    /// le comportement d'origine est faux — pas seulement ce qu'elle fait a la place.
+    /// parlent que la ou l'original a renonce, celles-ci <b>remplacent</b> un comportement. Chacune
+    /// porte donc ici la raison pour laquelle le comportement d'origine est faux — pas seulement ce
+    /// qu'elle fait a la place.
+    ///
+    /// Aucune n'a d'interrupteur : un reglage que personne ne decocherait n'est que du bruit dans
+    /// la fenetre. Si Blues corrige en amont, le prefix calcule simplement le meme resultat que lui ;
+    /// s'il change la signature, <c>PatchFix</c> le dit dans le journal et passe son chemin.
     /// </remarks>
     public static class SharedJoysFixes
     {
-        /// <summary>
-        /// Les greffes sont toujours posees, et c'est ici qu'on decide de s'exprimer ou non : un
-        /// reglage qui ne s'appliquerait qu'au redemarrage serait invivable a l'usage.
-        /// </summary>
-        static bool Enabled => SharedJoysPlusMod.Settings == null || SharedJoysPlusMod.Settings.fixBugs;
-
         /// <summary>
         /// <c>JoyUtil.IsValidChair</c> reconnait un siege par
         /// <c>defName.ToLower().Contains("bench")</c> ou <c>"seat"</c>, en plus de
@@ -34,7 +32,6 @@ namespace SharedJoysPlus
         /// </summary>
         public static bool IsValidChair_Prefix(Building chair, Pawn pawn, ref bool __result)
         {
-            if (!Enabled) return true;
             __result = chair != null
                        && chair.def.building != null
                        && chair.def.building.isSittable
@@ -52,8 +49,7 @@ namespace SharedJoysPlus
         /// </summary>
         public static bool FreeParticipantSlots_Prefix(Building b, JoyGiverDef giver, ref int __result)
         {
-            // Desactive, ou hors de nos hypotheses : on laisse l'original s'exprimer.
-            if (!Enabled) return true;
+            // Hors de nos hypotheses : on laisse l'original s'exprimer.
             if (b == null || b.Map == null || giver == null || giver.jobDef == null) return true;
 
             int taken = 0;

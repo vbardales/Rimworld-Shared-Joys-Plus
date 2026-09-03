@@ -87,8 +87,9 @@ placeless activity.
 ### Fixes to Shared Joys itself
 
 Two bugs are corrected on top of the extension. Unlike the three hooks above, these are **prefixes
-that replace a behaviour**, so they have their own switch in the settings — turn them off if Blues
-fixes them upstream.
+that replace a behaviour**. They have no switch: if Blues fixes either upstream, the prefix simply
+computes the same answer he does, and if he changes a signature the patch is skipped with a line in
+the log.
 
 - **`JoyUtil.IsValidChair` recognised a seat by name.** On top of `building.isSittable`, it also
   accepted any `defName` containing `"bench"` or `"seat"`. Since that is an *or*, the heuristic
