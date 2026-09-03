@@ -84,6 +84,33 @@ third-party mod adding placeless recreation therefore shows up on its own.
 Filtering on `thingDefs` would be **wrong**: `EatChocolate` has a list of them and is still a
 placeless activity.
 
+### Fixes to Shared Joys itself
+
+Two bugs are corrected on top of the extension. Unlike the three hooks above, these are **prefixes
+that replace a behaviour**, so they have their own switch in the settings — turn them off if Blues
+fixes them upstream.
+
+- **`JoyUtil.IsValidChair` recognised a seat by name.** On top of `building.isSittable`, it also
+  accepted any `defName` containing `"bench"` or `"seat"`. Since that is an *or*, the heuristic
+  widened nothing useful — it only added false positives, and in vanilla alone it catches seven
+  workbenches: `SimpleResearchBench`, `HiTechResearchBench`, `AncientSimpleResearchBench`,
+  `HandTailoringBench`, `ElectricTailoringBench`, `FabricationBench` and `AncientWorkbenchs`. A
+  colonist could be sent to "sit" on a research bench. Nothing is lost by dropping it: furniture
+  the game can actually seat a pawn on carries `isSittable`, or `CanReserveSittableOrSpot` would
+  refuse it anyway.
+- **`JoyJobFactory.FreeParticipantSlots` counted every reservation** held on the building, whatever
+  the job, and subtracted that from `joyMaxParticipants`. A hauler picking something up off the
+  table, a builder repairing it, a cleaner — each one made the spot look full and blocked the
+  shared break. Only reservations whose job matches the recreation are counted now.
+
+A third problem is reported but **not** repaired, because it cannot be from the outside:
+`JoyJobFactory` caches the `MethodInfo` of two *private* vanilla methods,
+`JoyGiver_InteractBuilding.CanInteractWith` and `TryGivePlayJob`. If a RimWorld version renames
+either, `HasOwnWorker` simply returns false and chess, poker, billiards and instruments fall back to
+the watch-a-building path — silently. Our own lookup would fail for the same reason, so all this mod
+can do is turn a silent failure into a log line at startup. That is still the difference between a
+bug a player reports and a bug you see when the game loads.
+
 ## What it does not do
 
 **Orphaned recreation buildings** — those carrying a `<building><joyKind>` that no `JoyGiverDef`

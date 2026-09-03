@@ -9,6 +9,7 @@ namespace SharedJoysPlus
     {
         public bool extendBuildings = true;
         public bool enableActivityMenu = true;
+        public bool fixBugs = true;
         public List<string> disabledActivities = new List<string>();
 
         public bool IsDisabled(JoyGiverDef d) => disabledActivities.Contains(d.defName);
@@ -27,6 +28,7 @@ namespace SharedJoysPlus
             base.ExposeData();
             Scribe_Values.Look(ref extendBuildings, "extendBuildings", true);
             Scribe_Values.Look(ref enableActivityMenu, "enableActivityMenu", true);
+            Scribe_Values.Look(ref fixBugs, "fixBugs", true);
             Scribe_Collections.Look(ref disabledActivities, "disabledActivities", LookMode.Value);
             if (disabledActivities == null) disabledActivities = new List<string>();
         }
@@ -62,6 +64,8 @@ namespace SharedJoysPlus
                 "SJP_ExtendBuildingsDesc".Translate());
             listing.CheckboxLabeled("SJP_EnableActivityMenu".Translate(), ref Settings.enableActivityMenu,
                 "SJP_EnableActivityMenuDesc".Translate());
+            listing.CheckboxLabeled("SJP_FixBugs".Translate(), ref Settings.fixBugs,
+                "SJP_FixBugsDesc".Translate());
 
             listing.GapLine();
             listing.Label("SJP_ActivityList".Translate());

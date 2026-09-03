@@ -33,6 +33,14 @@ namespace SharedJoysPlus
             patched += Patch(harmony, "GetAvailableSpots",
                 new[] { typeof(Building), typeof(Pawn) }, nameof(GetAvailableSpots_Postfix));
 
+            // Correctifs : ceux-la remplacent un comportement au lieu de le completer, d'ou le
+            // prefix, et d'ou l'interrupteur qui leur est propre dans les reglages.
+            PatchFix(harmony, BluesBridge.JoyUtilType, "IsValidChair",
+                new[] { typeof(Building), typeof(Pawn) }, nameof(SharedJoysFixes.IsValidChair_Prefix));
+            PatchFix(harmony, AccessTools.TypeByName("Blues.JoyJobFactory"), "FreeParticipantSlots",
+                new[] { typeof(Building), typeof(JoyGiverDef) }, nameof(SharedJoysFixes.FreeParticipantSlots_Prefix));
+            SharedJoysFixes.ReportReflectionHealth();
+
             if (patched < 3)
                 Log.Warning($"[Shared Joys+] {patched}/3 hooks applied. Shared Joys has most likely changed shape: " +
                             "the extended buildings (art, graves, meditation foci) will stay out of reach.");
@@ -41,6 +49,22 @@ namespace SharedJoysPlus
                 // indiscernable d'un mod casse, et c'est la seule trace verifiable sans jouer.
                 Log.Message($"[Shared Joys+] 3/3 hooks applied, {PlacelessActivities.All.Count} placeless activities found: " +
                             string.Join(", ", PlacelessActivities.All.ConvertAll(d => d.defName).ToArray()));
+        }
+
+        /// <summary>
+        /// Pose un correctif en prefix. Son absence n'est pas un echec du mod : le bug vise a
+        /// peut-etre deja ete corrige en amont, ou la methode renommee. On le dit, et on continue.
+        /// </summary>
+        static void PatchFix(Harmony harmony, System.Type type, string methodName, System.Type[] args, string prefixName)
+        {
+            MethodInfo original = type == null ? null : AccessTools.Method(type, methodName, args);
+            if (original == null)
+            {
+                Log.Message($"[Shared Joys+] fix skipped, method not found: {methodName}. " +
+                            "Shared Joys may have fixed it upstream.");
+                return;
+            }
+            harmony.Patch(original, prefix: new HarmonyMethod(typeof(SharedJoysFixes), prefixName));
         }
 
         static int Patch(Harmony harmony, string methodName, System.Type[] args, string postfixName)

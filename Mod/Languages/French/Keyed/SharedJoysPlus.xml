@@ -8,6 +8,8 @@
   <SJP_ExtendBuildingsDesc>Permet à « Relax at ... » et aux événements autonomes d'utiliser les œuvres d'art, les foyers de méditation et les tombes, qu'aucun JoyGiverDef ne cite nommément.</SJP_ExtendBuildingsDesc>
   <SJP_EnableActivityMenu>Activer le menu des activités sans lieu</SJP_EnableActivityMenu>
   <SJP_EnableActivityMenuDesc>Ajoute « Inviter ... à une activité » sur un colon, pour les loisirs qui n'ont aucun bâtiment à cliquer : promenade, contemplation du ciel, baignade, lecture, méditation, substances et friandises.</SJP_EnableActivityMenuDesc>
+  <SJP_FixBugs>Corriger les bugs de Shared Joys</SJP_FixBugs>
+  <SJP_FixBugsDesc>Deux correctifs appliqués par-dessus Shared Joys : un siège est reconnu par building.isSittable seul, au lieu d'accepter aussi tout defName contenant « bench » ou « seat » (ce qui attrape les établis de recherche et de tailleur) ; et le compte des places libres d'un bâtiment de loisir ignore les réservations qui appartiennent à d'autres tâches, si bien qu'un porteur ou un réparateur ne fait plus paraître le lieu complet.\nÀ décocher si Shared Joys les corrige chez lui.</SJP_FixBugsDesc>
   <SJP_ActivityList>Activités proposées :</SJP_ActivityList>
 
   <SJP_InviteToActivity>Inviter {0} à une activité...</SJP_InviteToActivity>

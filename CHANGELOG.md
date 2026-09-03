@@ -32,6 +32,28 @@ foyer est réellement partagé : seule la case d'assise change.
 - Promenades et baignades reprennent le trajet de l'hôte ; la contemplation du ciel prend une case
   libre et découverte à côté de la sienne.
 
+### Deux correctifs à Shared Joys lui-même
+
+Contrairement aux greffes ci-dessus, ceux-ci **remplacent** un comportement : ils ont donc leur
+propre interrupteur.
+
+- `JoyUtil.IsValidChair` reconnaissait un siège par son nom : en plus de `building.isSittable`, il
+  acceptait tout `defName` contenant « bench » ou « seat ». Étant un **ou**, l'heuristique
+  n'élargissait rien d'utile et n'ajoutait que des faux positifs — en vanilla seul elle attrape
+  **sept établis** : `SimpleResearchBench`, `HiTechResearchBench`, `AncientSimpleResearchBench`,
+  `HandTailoringBench`, `ElectricTailoringBench`, `FabricationBench`, `AncientWorkbenchs`. Un
+  colon pouvait être envoyé « s'asseoir » sur un établi de recherche.
+- `JoyJobFactory.FreeParticipantSlots` comptait **toutes** les réservations posées sur le bâtiment,
+  quelle que soit la tâche, et les soustrayait de `joyMaxParticipants`. Un porteur, un réparateur,
+  un nettoyeur : chacun faisait paraître le lieu complet et interdisait le moment partagé.
+
+Un troisième défaut est **signalé mais pas réparé**, parce qu'il ne peut pas l'être de l'extérieur :
+Shared Joys met en cache le `MethodInfo` de deux méthodes **privées** du vanilla
+(`JoyGiver_InteractBuilding.CanInteractWith` et `TryGivePlayJob`). Si une version de RimWorld les
+renomme, `HasOwnWorker` renvoie faux et les échecs, le poker, le billard et les instruments se
+rabattent en silence sur le chemin « regarder un bâtiment ». Notre propre recherche échouerait pour
+la même raison : tout ce qu'on peut faire est transformer la panne muette en ligne de journal.
+
 ### Réglages
 
 - Deux interrupteurs : bâtiments étendus, menu d'activités.

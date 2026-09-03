@@ -8,9 +8,17 @@
 - **Licence:** none declared. No public repository either: neither `About.xml`, nor the assembly,
   nor the Workshop page carries a link to sources.
 
+Blues was told about this mod on 2026-09-02 and agreed to it, on one condition: that Shared Joys be
+declared a **requirement, never a replacement**. It is — `modDependencies`, no `incompatibleWith`,
+and the description says so in its first line.
+
 **Nothing from that mod is reused here.** Not a def, not a texture, not a line of code. This mod
-contains only code written for the purpose, and grafts onto Blues' code through Harmony, in
-postfix only.
+contains only code written for the purpose, and grafts onto Blues' code through Harmony.
+
+The extension hooks are **postfixes only**, and passive: they speak up where his code has already
+given up. The two bug fixes are **prefixes that replace a behaviour** — a different thing, so they
+carry their own switch in the settings, and each one documents in the source why the original is
+wrong, not merely what it does instead.
 
 Two things are borrowed by reference, never by copy:
 

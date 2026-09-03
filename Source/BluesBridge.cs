@@ -71,6 +71,20 @@ namespace SharedJoysPlus
             return job.playerForced || !p.jobs.IsCurrentJobPlayerInterruptible();
         }
 
+        /// <summary>
+        /// Un champ statique prive de Shared Joys est-il renseigne ? Sert au controle de sante des
+        /// <c>MethodInfo</c> qu'il met en cache : un champ nul y signifie une methode vanilla
+        /// introuvable, donc une fonction eteinte sans un mot.
+        /// </summary>
+        public static bool PrivateStaticFieldIsSet(string typeName, string fieldName)
+        {
+            Type type = AccessTools.TypeByName(typeName);
+            FieldInfo field = type == null ? null : AccessTools.Field(type, fieldName);
+            // Champ absent : la classe a change de forme, ce n'est pas a nous d'en juger ici.
+            if (field == null) return true;
+            return field.GetValue(null) != null;
+        }
+
         public static bool IsUnderLord(Pawn p)
         {
             if (isUnderLordMethod != null) return (bool)isUnderLordMethod.Invoke(null, new object[] { p });
