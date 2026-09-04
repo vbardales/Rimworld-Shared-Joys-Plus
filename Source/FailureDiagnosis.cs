@@ -146,20 +146,5 @@ namespace SharedJoysPlus
             return false;
         }
 
-        /// <summary>
-        /// Le <c>JoyGiverDef</c> qui sert ce <c>ThingDef</c>, s'il y en a un. Meme recherche que
-        /// celle de Shared Joys, refaite ici plutot que lue chez lui : son cache est prive, et une
-        /// dependance de plus sur sa forme interne ne vaut pas les quelques lignes economisees.
-        /// </summary>
-        static JoyGiverDef GiverFor(ThingDef def)
-        {
-            List<JoyGiverDef> all = DefDatabase<JoyGiverDef>.AllDefsListForReading;
-            for (int i = 0; i < all.Count; i++)
-            {
-                List<ThingDef> things = all[i].thingDefs;
-                if (things != null && things.Contains(def)) return all[i];
-            }
-            return null;
-        }
     }
 }
