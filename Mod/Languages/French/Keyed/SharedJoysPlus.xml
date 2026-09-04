@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <SJP_ModTitle>Shared Joys — tous les loisirs</SJP_ModTitle>
+  <SJP_ModTitle>Shared Joys : tous les loisirs</SJP_ModTitle>
   <SJP_SharedJoysMissing>Shared Joys n'est pas chargé. Seul le menu des activités sans lieu reste actif.</SJP_SharedJoysMissing>
 
   <SJP_ExtendBuildings>Étendre les invitations aux bâtiments</SJP_ExtendBuildings>
@@ -20,8 +20,8 @@
   <SJP_ArtAllTaken>{0} ne se contemple qu'à un à la fois. Il faut une œuvre par participant, dans la même pièce.</SJP_ArtAllTaken>
   <SJP_GraveAllTaken>On ne se recueille qu'à un devant {0}. Il faut une tombe par participant, à proximité l'une de l'autre.</SJP_GraveAllTaken>
   <SJP_NoMeditationSpot>Aucune place libre pour s'asseoir et méditer autour de {0}.</SJP_NoMeditationSpot>
-  <SJP_NeedsChairBeside>{0} demande une chaise libre sur l'un de ses quatre côtés — une par joueur.</SJP_NeedsChairBeside>
-  <SJP_NeedsChairToWatch>{0} demande une chaise libre pour s'y asseoir — une par spectateur.</SJP_NeedsChairToWatch>
+  <SJP_NeedsChairBeside>{0} demande une chaise libre sur l'un de ses quatre côtés, une par joueur.</SJP_NeedsChairBeside>
+  <SJP_NeedsChairToWatch>{0} demande une chaise libre pour s'y asseoir, une par spectateur.</SJP_NeedsChairToWatch>
 
   <SJP_Act_Meditate>Méditer</SJP_Act_Meditate>
   <SJP_Act_Pray>Prier</SJP_Act_Pray>
