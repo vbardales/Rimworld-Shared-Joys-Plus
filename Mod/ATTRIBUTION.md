@@ -9,14 +9,14 @@
   nor the Workshop page carries a link to sources.
 
 Blues was told about this mod on 2026-09-02 and agreed to it, on one condition: that Shared Joys be
-declared a **requirement, never a replacement**. It is — `modDependencies`, no `incompatibleWith`,
+declared a **requirement, never a replacement**. It is: `modDependencies`, no `incompatibleWith`,
 and the description says so in its first line.
 
 **Nothing from that mod is reused here.** Not a def, not a texture, not a line of code. This mod
 contains only code written for the purpose, and grafts onto Blues' code through Harmony.
 
 The extension hooks are **postfixes only**, and passive: they speak up where his code has already
-given up. The two bug fixes are **prefixes that replace a behaviour** — a different thing, and each
+given up. The two bug fixes are **prefixes that replace a behaviour**, a different thing, and each
 one documents in the source why the original is wrong, not merely what it does instead. If Blues
 fixes either upstream, the prefix ends up computing the same answer he does; if he changes a
 signature, the patch is skipped and says so in the log.
@@ -29,7 +29,7 @@ Two things are borrowed by reference, never by copy:
 | `Blues.JoyousSet` (thresholds, recreation drain) | Read by reflection. Without this, the player would set the same thresholds in two places, with different results depending on which path was taken. |
 
 `Languages/French/Keyed/BluesSharedJoys.xml` is a **full French translation of Shared Joys' 47
-keys**. It is an original translation of Blues' English strings, not a copy of his file — his mod
+keys**. It is an original translation of Blues' English strings, not a copy of his file: his mod
 ships in English only, so without it the whole interface stays English in a French game. The file
 is named after its source rather than after us, so its origin is obvious at a glance, and it is
 kept apart from our own keys: putting both in one file produced duplicate-key warnings, since
