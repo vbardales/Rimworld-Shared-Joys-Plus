@@ -20,8 +20,9 @@
   <SJP_ArtAllTaken>Only one colonist can admire {0} at a time. A group needs one artwork each, in the same room.</SJP_ArtAllTaken>
   <SJP_GraveAllTaken>Only one colonist can pay respects at {0} at a time. A group needs one grave each, close together.</SJP_GraveAllTaken>
   <SJP_NoMeditationSpot>No free spot to sit and meditate around {0}.</SJP_NoMeditationSpot>
-  <SJP_NeedsChairBeside>{0} needs a free chair on one of its four sides - one per player.</SJP_NeedsChairBeside>
+  <SJP_NoSpotBeside>No free spot left beside {0} to sit down, chair or bare ground.</SJP_NoSpotBeside>
   <SJP_NeedsChairToWatch>{0} needs a free chair to watch from - one per viewer.</SJP_NeedsChairToWatch>
+  <SJP_SeatsOnly>{0} only takes {1} at a time. The others need one of their own, or another activity.</SJP_SeatsOnly>
 
   <SJP_Act_Meditate>Meditate</SJP_Act_Meditate>
   <SJP_Act_Pray>Pray</SJP_Act_Pray>

@@ -72,6 +72,22 @@ renomme, `HasOwnWorker` renvoie faux et les échecs, le poker, le billard et les
 rabattent en silence sur le chemin « regarder un bâtiment ». Notre propre recherche échouerait pour
 la même raison : tout ce qu'on peut faire est transformer la panne muette en ligne de journal.
 
+### Les plateaux se jouent sans chaise
+
+`JoyGiver_InteractBuildingSitAdjacent.TryGivePlayJob` cherche une place en deux passes : une vraie
+chaise d'abord, puis n'importe quelle case réservable. Entre les deux il fait
+`if (def.requireChair) break;`, et `requireChair` vaut **vrai par défaut**, aucun `JoyGiverDef` du
+jeu de base ne le passant à faux. La seconde passe n'a donc pratiquement jamais lieu : pas de
+chaise, pas de partie. Dehors, des colons restent plantés à côté d'un plateau qu'ils ne toucheront
+jamais.
+
+Rien dans le jeu n'exige pourtant cette chaise. `JobDriver_SitFacingBuilding` réserve la case
+d'assise par `ReserveSittableOrSpot`, qui accepte une case nue, et le pion s'y assoit sans rien
+casser. La seconde passe est donc refaite ici, les chaises restant préférées quand il y en a.
+
+La seule limite conservée est celle du jeu : `jobDef.joyMaxParticipants`, le nombre même que le
+pilote réserve sur le bâtiment. Un plateau prévu pour deux reste à deux.
+
 ### Le message d'échec dit la vraie raison
 
 Shared Joys n'en a qu'un pour tous les échecs de lieu, « Not enough space for everyone to chill »,

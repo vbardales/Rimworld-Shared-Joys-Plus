@@ -87,13 +87,23 @@ namespace SharedJoysPlus
         /// </summary>
         static string DiagnoseSeating(Pawn pawn, Building b)
         {
-            JoyGiverDef giver = GiverFor(b.def);
+            JoyGiverDef giver = GroundSeating.GiverFor(b.def);
             if (giver == null || giver.giverClass == null) return null;
 
-            if (typeof(JoyGiver_InteractBuildingSitAdjacent).IsAssignableFrom(giver.giverClass)
-                && giver.requireChair
-                && !HasFreeChairAmong(pawn, GenAdj.CellsAdjacentCardinal(b), b.Map))
-                return "SJP_NeedsChairBeside".Translate(b.LabelShort).ToString();
+            // Le plafond d'abord : c'est la raison la plus frequente, et la seule qu'aucune
+            // disposition de la piece ne peut lever. Shared Joys calcule les places libres comme
+            // joyMaxParticipants moins les reservations posees, si bien qu'un meuble prevu pour
+            // deux refuse le troisieme avec le meme « pas assez de place » qu'une piece sans
+            // chaises. On ne parle que quand les places sont vraiment prises, pour qu'un vrai
+            // manque d'espace garde son propre message.
+            int seats = giver.jobDef != null ? giver.jobDef.joyMaxParticipants : 0;
+            if (seats > 0 && TakenSlots(b, giver) >= seats)
+                return "SJP_SeatsOnly".Translate(b.LabelShort, seats).ToString();
+
+            // Plus de message de chaise pour les plateaux : GroundSeating les fait jouer par terre.
+            // S'ils echouent encore, c'est qu'aucune des quatre cases cardinales n'est libre.
+            if (typeof(JoyGiver_InteractBuildingSitAdjacent).IsAssignableFrom(giver.giverClass))
+                return "SJP_NoSpotBeside".Translate(b.LabelShort).ToString();
 
             if (typeof(JoyGiver_WatchBuilding).IsAssignableFrom(giver.giverClass)
                 && giver.desireSit
@@ -101,6 +111,25 @@ namespace SharedJoysPlus
                 return "SJP_NeedsChairToWatch".Translate(b.LabelShort).ToString();
 
             return null;
+        }
+
+        /// <summary>
+        /// How many places on this building are already spoken for, counted the same way
+        /// <see cref="SharedJoysFixes.FreeParticipantSlots_Prefix"/> counts them: only the
+        /// reservations whose job is this recreation, never a hauler or a cleaner passing through.
+        /// </summary>
+        static int TakenSlots(Building b, JoyGiverDef giver)
+        {
+            if (b?.Map == null || giver?.jobDef == null) return 0;
+
+            int taken = 0;
+            foreach (ReservationManager.Reservation reservation in b.Map.reservationManager.ReservationsReadOnly)
+            {
+                if (reservation.Target.Thing != b) continue;
+                if (reservation.Job == null || reservation.Job.def != giver.jobDef) continue;
+                taken++;
+            }
+            return taken;
         }
 
         static bool HasFreeChairAmong(Pawn pawn, IEnumerable<IntVec3> cells, Map map)

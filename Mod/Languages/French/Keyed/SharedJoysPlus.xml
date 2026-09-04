@@ -20,8 +20,9 @@
   <SJP_ArtAllTaken>{0} ne se contemple qu'à un à la fois. Il faut une œuvre par participant, dans la même pièce.</SJP_ArtAllTaken>
   <SJP_GraveAllTaken>On ne se recueille qu'à un devant {0}. Il faut une tombe par participant, à proximité l'une de l'autre.</SJP_GraveAllTaken>
   <SJP_NoMeditationSpot>Aucune place libre pour s'asseoir et méditer autour de {0}.</SJP_NoMeditationSpot>
-  <SJP_NeedsChairBeside>{0} demande une chaise libre sur l'un de ses quatre côtés, une par joueur.</SJP_NeedsChairBeside>
+  <SJP_NoSpotBeside>Plus aucune place libre à côté de {0} pour s'asseoir, chaise ou sol nu.</SJP_NoSpotBeside>
   <SJP_NeedsChairToWatch>{0} demande une chaise libre pour s'y asseoir, une par spectateur.</SJP_NeedsChairToWatch>
+  <SJP_SeatsOnly>{0} ne peut accueillir que {1} personne(s) à la fois. Les autres ont besoin du leur, ou d'une autre activité.</SJP_SeatsOnly>
 
   <SJP_Act_Meditate>Méditer</SJP_Act_Meditate>
   <SJP_Act_Pray>Prier</SJP_Act_Pray>

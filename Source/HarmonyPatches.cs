@@ -99,6 +99,10 @@ namespace SharedJoysPlus
         {
             if (__result != null || pawn == null || b == null) return;
             if (Enabled) __result = ExtendedBuildingJoy.TryMakeJob(pawn, b, takenSpots);
+            // Les plateaux que le vanilla refuse faute de chaise : on les fait jouer par terre,
+            // dans la limite de joyMaxParticipants. Ne depend pas du reglage des batiments
+            // etendus, il s'agit de plateaux du jeu de base.
+            if (__result == null) __result = GroundSeating.TryMake(pawn, b, takenSpots);
             // Le diagnostic ne depend pas de l'extension : le cas de la chaise manquante concerne
             // les plateaux du jeu de base, meme quand nos batiments etendus sont desactives.
             if (__result == null) FailureDiagnosis.Note(pawn, b);

@@ -42,9 +42,9 @@ Unlike the hooks above, these replace a behaviour. If Blues fixes either upstrea
 
 IT TELLS YOU WHY
 
-Shared Joys has one message for every placement failure - "Not enough space for everyone to chill" - and it sends you looking for room when what is usually missing is a chair. So the message is replaced, not doubled, by the real reason: a free chair on one of the four sides for a board game, a chair to watch a television from, or the fact that a single sculpture or grave can only be used by one colonist at a time. The substitution happens inside JoyUtil.Notify, which Shared Joys only ever calls on player-initiated paths, so a failed autonomous event stays as quiet as before.
+Shared Joys has one message for every placement failure - "Not enough space for everyone to chill" - and it sends you looking for room when what is usually missing is a chair. So the message is replaced, not doubled, by the real reason: no free cell left beside a board, a chair to watch a television from, the fact that a single sculpture or grave can only be used by one colonist at a time, or a board that is simply already full. The substitution happens inside JoyUtil.Notify, which Shared Joys only ever calls on player-initiated paths, so a failed autonomous event stays as quiet as before.
 
-The chair case is not a bug in either mod, incidentally - it is vanilla. requireChair defaults to true and no JoyGiverDef in the base game sets it to false. Colonists don't play chess standing up; the message just never said so.
+Board games are also made playable without a chair: the vanilla giver breaks out of its own second search pass when requireChair is true, which it is by default everywhere, so a board with no chair beside it is never used. Nothing in the game needs that chair - the driver reserves the seat with ReserveSittableOrSpot, which takes bare ground. The only limit kept is jobDef.joyMaxParticipants.
 
 A third problem is reported but not repaired, because it cannot be from the outside: Shared Joys caches the MethodInfo of two private vanilla methods, and if a RimWorld version renames either, chess, poker, billiards and instruments fall back to the watch-a-building path in silence. Our own lookup would fail the same way, so this mod turns that silent failure into a log line at startup instead.
 

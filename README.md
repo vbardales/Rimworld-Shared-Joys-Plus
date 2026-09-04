@@ -104,6 +104,22 @@ the log.
   table, a builder repairing it, a cleaner: each one made the spot look full and blocked the
   shared break. Only reservations whose job matches the recreation are counted now.
 
+### Board games work without chairs
+
+`JoyGiver_InteractBuildingSitAdjacent.TryGivePlayJob` looks for a seat in two passes: a real chair
+first, then any reservable cell. Between the two it does `if (def.requireChair) break;`, and
+`requireChair` defaults to **true**, with no `JoyGiverDef` in the base game setting it to false. The
+second pass therefore almost never happens: no chair, no game. Outdoors, that means colonists stand
+next to a board they will never touch.
+
+Nothing in the game actually needs that chair. `JobDriver_SitFacingBuilding` reserves the seat with
+`ReserveSittableOrSpot`, which takes a bare cell perfectly well, and the pawn sits down on the
+ground without complaint. So the second pass is done here instead, chairs still preferred when there
+are any.
+
+The one limit kept is the game's own: `jobDef.joyMaxParticipants`, the very number the driver
+reserves on the building. A board meant for two stays a board for two.
+
 ### It tells you why, instead of guessing
 
 Shared Joys has one message for every placement failure, *"Not enough space for everyone to
@@ -118,16 +134,15 @@ stays as quiet as before.
 
 | Instead of "not enough space" | You get |
 |---|---|
-| chess, Ur, poker, go boards… | *needs a free chair on one of its four sides, one per player* |
+| chess, Ur, poker, go boards… | *no free spot left beside it, chair or bare ground* |
 | television | *needs a free chair to watch from, one per viewer* |
 | a single sculpture, several pawns | *only one colonist can admire it at a time* |
 | a single grave, several pawns | *only one colonist can pay respects at a time* |
 | a meditation focus with no room | *no free spot to sit and meditate around it* |
+| a board already full | *it only takes N at a time* |
 
-The chair case is not a bug in either mod, incidentally: it is vanilla. `requireChair` defaults to
-**true** and no `JoyGiverDef` in the base game sets it to false, so
-`JoyGiver_InteractBuildingSitAdjacent.TryGivePlayJob` breaks out before it ever tries the bare
-ground. Colonists don't play chess standing up. The message just never said so.
+Note that the board rows no longer talk about chairs: since the section above lets colonists play on
+the ground, a board that still refuses has genuinely run out of adjacent cells, or is already full.
 
 A third problem is reported but **not** repaired, because it cannot be from the outside:
 `JoyJobFactory` caches the `MethodInfo` of two *private* vanilla methods,
