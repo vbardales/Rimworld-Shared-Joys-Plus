@@ -8,20 +8,20 @@ using Verse.AI;
 namespace SharedJoysPlus
 {
     /// <summary>
-    /// Les loisirs qui n'ont aucun batiment a cliquer : promenade, contemplation du ciel,
-    /// baignade, bonhomme de neige, lecture, meditation, priere, drogues et friandises.
-    /// Shared Joys ne pouvait pas les atteindre — toute son interface part d'un batiment.
+    /// The recreations with no building to click: walks, skygazing, swimming, snowmen, reading,
+    /// meditation, prayer, drugs and treats.
+    /// Shared Joys could not reach them: its whole interface starts from a building.
     ///
-    /// On ne reecrit aucun comportement : c'est le <c>JoyGiver</c> vanilla lui-meme qui fabrique
-    /// la tache de chaque pion. On se contente de la demander pour plusieurs pions a la fois, et
-    /// de rapprocher les destinations quand l'activite s'y prete.
+    /// No behaviour is rewritten: the vanilla <c>JoyGiver</c> builds each pawn's job itself. All we
+    /// do is ask it for several pawns at once, then bring the destinations closer together where
+    /// the activity allows it.
     /// </summary>
     public static class PlacelessActivities
     {
-        /// <summary>Activites ou tout le monde suit le meme trajet que l'hote.</summary>
+        /// <summary>Activities where everyone follows the host's own route.</summary>
         static readonly HashSet<string> SharesPath = new HashSet<string> { "GoForWalk", "GoSwimming" };
 
-        /// <summary>Activites ou chacun prend une case libre a cote de celle de l'hote.</summary>
+        /// <summary>Activities where each pawn takes a free cell next to the host's.</summary>
         static readonly HashSet<string> SharesSpot = new HashSet<string> { "Skygaze" };
 
         static List<JoyGiverDef> cache;
@@ -40,20 +40,19 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Un fournisseur est « sans lieu » des lors qu'il n'est pas ancre sur un batiment.
-        /// Les trois familles ancrees sont exactement celles que Shared Joys couvre deja :
-        /// <c>JoyGiver_InteractBuilding</c> (echecs, billard, instruments, telescope),
-        /// <c>JoyGiver_WatchBuilding</c> (television, fers a cheval) et
-        /// <c>JoyGiver_SocialRelax</c> (points de rassemblement).
-        /// On ne filtre surtout pas sur <c>thingDefs</c> : le chocolat en a une liste, et reste
-        /// une activite sans lieu.
+        /// A giver counts as placeless as soon as it is not anchored to a building.
+        /// The three anchored families are exactly the ones Shared Joys already covers:
+        /// <c>JoyGiver_InteractBuilding</c> (chess, billiards, instruments, telescope),
+        /// <c>JoyGiver_WatchBuilding</c> (television, horseshoes) and
+        /// <c>JoyGiver_SocialRelax</c> (gathering spots).
+        /// Filtering on <c>thingDefs</c> would be quite wrong: chocolate has a list of them and is
+        /// still a placeless activity.
         /// </summary>
         /// <remarks>
-        /// Ne pas exiger de <c>jobDef</c> : <c>TakeDrug</c> et <c>EatChocolate</c> n'en declarent
-        /// aucun, parce que <c>JoyGiver_Ingest.CreateIngestJob</c> fabrique un <c>JobDefOf.Ingest</c>
-        /// lui-meme. Les exiger revenait a promettre les substances et les friandises dans la fiche
-        /// et a ne jamais les proposer. On n'a de toute facon pas besoin du champ : c'est le worker
-        /// vanilla qui construit la tache.
+        /// Do not require a <c>jobDef</c> either: <c>TakeDrug</c> and <c>EatChocolate</c> declare
+        /// none, because <c>JoyGiver_Ingest.CreateIngestJob</c> builds a <c>JobDefOf.Ingest</c> job
+        /// itself. Requiring it meant promising drugs and treats in the description and never
+        /// offering them. The field was never needed anyway: the vanilla worker builds the job.
         /// </remarks>
         static bool IsPlaceless(JoyGiverDef d)
         {
@@ -74,7 +73,7 @@ namespace SharedJoysPlus
             return d.defName;
         }
 
-        /// <summary>Le pion peut-il s'y mettre a l'instant ? (besoins, capacites, tolerance au type)</summary>
+        /// <summary>Can the pawn do it right now? (needs, capacities, tolerance for the type)</summary>
         public static bool AvailableFor(JoyGiverDef d, Pawn pawn)
         {
             JoyGiver worker = d.Worker;
@@ -82,23 +81,23 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Verification complete : le fournisseur produit-il vraiment une tache ? <c>CanBeGivenTo</c>
-        /// ne regarde que le pion, pas la carte — la priere n'exige rien de lui mais demande une
-        /// chambre a lui ou une salle de culte, la baignade demande de l'eau assez chaude. Sans ce
-        /// second test, le menu proposerait des entrees qui echouent au clic.
-        /// Aucun de ces fournisseurs ne modifie l'etat du jeu quand il cherche.
+        /// The full check: does the giver really produce a job? <c>CanBeGivenTo</c> only looks at the
+        /// pawn, never at the map: prayer asks nothing of him but wants a room of his own or a
+        /// worship room, swimming wants water warm enough. Without this second test the menu would
+        /// offer entries that fail on click.
+        /// None of these givers changes game state while searching.
         /// </summary>
         public static bool CanActuallyStart(JoyGiverDef d, Pawn pawn)
         {
             return AvailableFor(d, pawn) && d.Worker.TryGiveJob(pawn) != null;
         }
 
-        // --- Lancement -------------------------------------------------------------------------
+        // --- Starting -------------------------------------------------------------------------
 
         /// <summary>
-        /// Met tout le groupe a la meme activite. Le premier pion est l'hote : si lui n'y arrive
-        /// pas, rien ne se passe. Si personne d'autre ne suit, on annule aussi l'hote plutot que
-        /// de le laisser partir seul apres avoir affiche une invitation.
+        /// Puts the whole group on the same activity. The first pawn is the host: if he cannot manage
+        /// it, nothing happens. If nobody else follows, the host is cancelled too rather than left
+        /// to wander off alone after an invitation was shown.
         /// </summary>
         public static bool TryStart(List<Pawn> group, JoyGiverDef giver, out string reason)
         {
@@ -148,10 +147,10 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Rapproche la destination d'un invite de celle de l'hote. Ni la promenade, ni la
-        /// baignade, ni la contemplation du ciel ne reservent quoi que ce soit
-        /// (<c>TryMakePreToilReservations</c> y renvoie <c>true</c> sans rien prendre), donc
-        /// partager un trajet ne peut pas produire de conflit de reservation.
+        /// Brings a guest's destination closer to the host's. Neither walking, nor swimming, nor
+        /// skygazing reserves anything at all
+        /// (<c>TryMakePreToilReservations</c> returns <c>true</c> there without taking a thing), so
+        /// sharing a route cannot produce a reservation conflict.
         /// </summary>
         static void ApplyCohesion(Pawn pawn, JoyGiverDef giver, Job job, Job hostJob)
         {
@@ -182,7 +181,7 @@ namespace SharedJoysPlus
             if (pawn?.jobs == null) return false;
             if (!pawn.jobs.TryTakeOrderedJob(job, JobTag.Misc) || pawn.CurJob != job) return false;
 
-            // Meme reglage que Shared Joys : on redescend le loisir pour que le moment dure.
+            // Same setting as Shared Joys: recreation is lowered so the moment lasts.
             Need_Joy joy = pawn.needs?.joy;
             if (joy != null) joy.CurLevel = Mathf.Min(joy.CurLevel, BluesBridge.JoyDrainTo);
             return true;

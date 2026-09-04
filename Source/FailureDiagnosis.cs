@@ -6,18 +6,18 @@ using Verse.AI;
 namespace SharedJoysPlus
 {
     /// <summary>
-    /// Dit pourquoi un moment partage n'a pas pu commencer.
+    /// Says why a shared break could not start.
     /// </summary>
     /// <remarks>
-    /// Shared Joys n'a qu'un seul message pour tous les echecs de lieu — « Not enough space for
-    /// everyone to chill » — et il envoie chercher de la place la ou il manque le plus souvent une
-    /// chaise. Notre extension aggrave le probleme : une seule sculpture pour deux colons produit
-    /// exactement le meme texte, alors que la vraie raison est qu'une oeuvre ne se contemple qu'a un.
+    /// Shared Joys has a single message for every placement failure, "Not enough space for everyone
+    /// to chill", and it sends you looking for room where what is usually missing is a chair. Our
+    /// extension made it worse: one sculpture for two colonists produced exactly the same text,
+    /// when the real reason is that an artwork can only be admired by one pawn at a time.
     ///
-    /// On ne double pas le message, on le <b>remplace</b> : le diagnostic est calcule quand la
-    /// fabrication de la tache echoue, puis substitue dans <c>JoyUtil.Notify</c>. Cette methode
-    /// n'est appelee que sur les chemins manuels — tous ses appels chez Blues sont gardes par
-    /// <c>if (manual)</c> — donc un evenement autonome rate ne dira jamais rien.
+    /// The message is not doubled but <b>replaced</b>: the reason is worked out when job creation
+    /// fails, then substituted inside <c>JoyUtil.Notify</c>. That method is only ever called on
+    /// manual paths, every call site in Blues' code being guarded by <c>if (manual)</c>, so a
+    /// failed autonomous event never says a word.
     /// </remarks>
     public static class FailureDiagnosis
     {
@@ -25,9 +25,9 @@ namespace SharedJoysPlus
         static int pendingTick = -1;
 
         /// <summary>
-        /// Calcule et retient la raison de l'echec pour ce batiment. Appele depuis le postfix de
-        /// <c>MakeJoyJob</c>, donc une fois par participant : le dernier a parler gagne, ce qui est
-        /// le bon choix — c'est celui qui n'a pas pu suivre.
+        /// Works out and holds the reason this building failed. Called from the <c>MakeJoyJob</c>
+        /// postfix, so once per participant: the last to speak wins, which is the right choice, since
+        /// that is the one who could not follow.
         /// </summary>
         public static void Note(Pawn pawn, Building b)
         {
@@ -36,9 +36,9 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Substitue notre raison a celle de Shared Joys, si elle a ete calculee au meme tic. La
-        /// borne de temps evite qu'un diagnostic oublie ne vienne coiffer un message sans rapport,
-        /// « untel ne peut pas atteindre untel » par exemple.
+        /// Substitutes our reason for Shared Joys' own, if it was worked out on the same tick. That
+        /// time bound stops a forgotten diagnosis from capping an unrelated message, such as
+        /// "so-and-so cannot reach so-and-so".
         /// </summary>
         public static bool TryTakeOver(ref string text)
         {
@@ -61,7 +61,7 @@ namespace SharedJoysPlus
             switch (ExtendedBuildingJoy.KindOf(b))
             {
                 case ExtJoyKind.Art:
-                    // Une cible existerait si rien n'etait pris : c'est donc que tout est pris.
+                    // A target would exist if nothing were taken, so everything must be taken.
                     return ExtendedBuildingJoy.HasAnyTarget(pawn, b)
                         ? "SJP_ArtAllTaken".Translate(b.LabelShort).ToString()
                         : null;
@@ -79,29 +79,27 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Le cas qui trompe le plus : les plateaux et les televisions veulent une chaise, et le
-        /// vanilla ne s'en cache pas — <c>requireChair</c> vaut vrai par defaut et aucun
-        /// <c>JoyGiverDef</c> du jeu de base ne le passe a faux. Sans chaise cardinale libre,
-        /// <c>JoyGiver_InteractBuildingSitAdjacent.TryGivePlayJob</c> sort avant meme d'essayer le
-        /// sol.
+        /// The most misleading case: boards and televisions want a chair, and vanilla makes no secret
+        /// of it. <c>requireChair</c> defaults to true and no base game <c>JoyGiverDef</c> sets it
+        /// false. Boards are handled by <see cref="GroundSeating"/> now, so only the television case
+        /// still turns on a chair here.
         /// </summary>
         static string DiagnoseSeating(Pawn pawn, Building b)
         {
             JoyGiverDef giver = GroundSeating.GiverFor(b.def);
             if (giver == null || giver.giverClass == null) return null;
 
-            // Le plafond d'abord : c'est la raison la plus frequente, et la seule qu'aucune
-            // disposition de la piece ne peut lever. Shared Joys calcule les places libres comme
-            // joyMaxParticipants moins les reservations posees, si bien qu'un meuble prevu pour
-            // deux refuse le troisieme avec le meme « pas assez de place » qu'une piece sans
-            // chaises. On ne parle que quand les places sont vraiment prises, pour qu'un vrai
-            // manque d'espace garde son propre message.
+            // The ceiling first: it is the most frequent reason, and the only one no arrangement of the
+            // room can lift. Shared Joys works out free places as joyMaxParticipants minus the
+            // reservations already placed, so a piece of furniture seating two refuses a third with the
+            // same "not enough space" as a room with no chairs in it. We only speak when the seats really
+            // are all taken, so that a genuine lack of space keeps its own message.
             int seats = giver.jobDef != null ? giver.jobDef.joyMaxParticipants : 0;
             if (seats > 0 && TakenSlots(b, giver) >= seats)
                 return "SJP_SeatsOnly".Translate(b.LabelShort, seats).ToString();
 
-            // Plus de message de chaise pour les plateaux : GroundSeating les fait jouer par terre.
-            // S'ils echouent encore, c'est qu'aucune des quatre cases cardinales n'est libre.
+            // No chair message for boards any more: GroundSeating has them play on the ground. If they
+            // still fail, none of the four cardinal cells is free.
             if (typeof(JoyGiver_InteractBuildingSitAdjacent).IsAssignableFrom(giver.giverClass))
                 return "SJP_NoSpotBeside".Translate(b.LabelShort).ToString();
 

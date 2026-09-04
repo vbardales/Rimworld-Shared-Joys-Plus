@@ -4,9 +4,9 @@ using Verse;
 namespace SharedJoysPlus
 {
     /// <summary>
-    /// Journal social d'un moment partage. On reutilise les defs de Shared Joys plutot que d'en
-    /// declarer d'autres : sans ca, deux pensees concurrentes s'empileraient pour le meme
-    /// evenement, et le plafond de pile de chacune serait faux.
+    /// The social record of a shared break. Shared Joys' own defs are reused rather than declaring
+    /// more: without that, two competing memories would stack for the same event, and the stack
+    /// limit of each would be wrong.
     /// </summary>
     public static class SharedJoyRecord
     {

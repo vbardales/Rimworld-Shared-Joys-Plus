@@ -16,17 +16,17 @@ namespace SharedJoysPlus
     }
 
     /// <summary>
-    /// Les batiments de loisir que Shared Joys ne sait pas reconnaitre, parce qu'aucun
-    /// <c>JoyGiverDef</c> ne cite leur <c>ThingDef</c> dans <c>thingDefs</c> : l'art, les tombes
-    /// et les foyers de meditation. Leurs fournisseurs vanilla cherchent leur cible eux-memes,
-    /// par groupe de choses ou par comp, et n'ont donc rien a lister.
+    /// The recreation buildings Shared Joys cannot recognise, because no <c>JoyGiverDef</c> names
+    /// their <c>ThingDef</c> in <c>thingDefs</c>: art, graves and meditation foci. Their vanilla
+    /// givers find their target on their own, by thing group or by comp, and so have nothing
+    /// to list.
     /// </summary>
     public static class ExtendedBuildingJoy
     {
-        /// <summary>Rayon de dispersion quand plusieurs pions visent le meme point de rendez-vous.</summary>
+        /// <summary>Spread radius when several pawns aim at the same meeting point.</summary>
         const float SpreadRadius = 12f;
 
-        /// <summary>Plafond de participants annonce pour un point de rendez-vous.</summary>
+        /// <summary>Participant ceiling reported for a meeting point.</summary>
         const int MaxCountedSpots = 6;
 
         public static ExtJoyKind KindOf(Thing t)
@@ -38,7 +38,7 @@ namespace SharedJoysPlus
             return ExtJoyKind.None;
         }
 
-        // --- Reconnaissance -------------------------------------------------------------------
+        // --- Recognition -------------------------------------------------------------------
 
         static bool IsArt(Thing t)
         {
@@ -62,12 +62,12 @@ namespace SharedJoysPlus
             return role == RoomRoleDefOf.PrisonCell || role == RoomRoleDefOf.PrisonBarracks;
         }
 
-        // --- Fabrication des taches -----------------------------------------------------------
+        // --- Building the jobs -----------------------------------------------------------
 
         /// <summary>
-        /// Fabrique la tache de loisir d'un pion sur ce point de rendez-vous, ou null.
-        /// Les cibles deja distribuees sont ajoutees a <paramref name="taken"/> pour que le pion
-        /// suivant en prenne une autre : Shared Joys passe la meme liste a tous les participants.
+        /// Builds a pawn's recreation job at this meeting point, or null.
+        /// Targets already handed out are added to <paramref name="taken"/> so the next pawn picks
+        /// another one: Shared Joys passes the same list to every participant.
         /// </summary>
         public static Job TryMakeJob(Pawn pawn, Building anchor, List<LocalTargetInfo> taken)
         {
@@ -84,9 +84,9 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Art et tombes se reservent a un seul pion (<c>JobDriver_VisitJoyThing</c> reserve la
-        /// cible avec <c>maxPawns 1</c>). Un groupe se repartit donc sur les pieces voisines :
-        /// un jardin de sculptures ou un cimetiere, pas une seule statue.
+        /// Art and graves are reserved for a single pawn (<c>JobDriver_VisitJoyThing</c> reserves the
+        /// target with <c>maxPawns 1</c>). So a group spreads over the neighbouring pieces:
+        /// a sculpture garden or a graveyard, never a single statue.
         /// </summary>
         static Job MakeVisitJob(Pawn pawn, Building anchor, List<LocalTargetInfo> taken,
                                 ThingRequestGroup group, JobDef jobDef, Func<Pawn, Thing, bool> validator)
@@ -120,9 +120,9 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Y aurait-il une cible valable si aucune n'etait deja distribuee ? Sert au diagnostic :
-        /// si oui alors que <see cref="TryMakeJob"/> a renvoye null, c'est que tout est pris — ce
-        /// qui n'est pas du tout la meme chose que « rien d'utilisable ici ».
+        /// Would there be a valid target if none had been handed out yet? Used by the diagnosis: if
+        /// so while <see cref="TryMakeJob"/> returned null, then everything is taken, which is not
+        /// at all the same thing as "nothing usable here".
         /// </summary>
         public static bool HasAnyTarget(Pawn pawn, Building anchor)
         {
@@ -151,7 +151,7 @@ namespace SharedJoysPlus
 
             Room room = t.GetRoom();
             if (room == null) return false;
-            // Le vanilla evite l'art d'une chambre qui n'est pas la sienne.
+            // Vanilla avoids art in a bedroom that is not the pawn's own.
             if (room.Role != null && room.Role.avoidViewingArtIfUnowned
                 && (pawn.ownership?.OwnedRoom == null || pawn.ownership.OwnedRoom != room))
                 return false;
@@ -171,9 +171,9 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// La meditation est le seul des trois cas ou tout le monde partage vraiment la meme
-        /// cible : le foyer est commun, seule la case d'assise change. C'est aussi le seul qui
-        /// puisse accueillir un groupe entier autour d'un unique objet.
+        /// Meditation is the only one of the three where everyone truly shares the same target: the
+        /// focus is common and only the sitting cell changes. It is also the only one that can hold
+        /// a whole group around a single object.
         /// </summary>
         static Job MakeMeditationJob(Pawn pawn, Building focus, List<LocalTargetInfo> taken)
         {
@@ -183,7 +183,7 @@ namespace SharedJoysPlus
             Building_Throne throne = focus as Building_Throne;
             if (throne != null)
             {
-                // Un trone n'appartient qu'a son proprietaire, et le vanilla passe par Reign.
+                // A throne belongs to its owner alone, and vanilla goes through Reign.
                 if (taken.Contains(throne)) return null;
                 if (throne.AssignedPawn != null && throne.AssignedPawn != pawn) return null;
                 if (!pawn.CanReserveAndReach(throne, PathEndMode.OnCell, Danger.None)) return null;
@@ -203,18 +203,18 @@ namespace SharedJoysPlus
 
         static JobDef MeditationJobFor(Pawn pawn)
         {
-            // Meme choix que MeditationUtility.GetMeditationJob(forJoy: true).
+            // Same choice as MeditationUtility.GetMeditationJob(forJoy: true).
             if (ModsConfig.IdeologyActive && pawn.Ideo != null
                 && pawn.Ideo.foundation is IdeoFoundation_Deity deity && deity.DeitiesListForReading.Any())
                 return JobDefOf.MeditatePray;
             return JobDefOf.Meditate;
         }
 
-        // --- Comptage des places ---------------------------------------------------------------
+        // --- Counting the spots ---------------------------------------------------------------
 
         /// <summary>
-        /// Combien de pions ce point de rendez-vous peut accueillir. Shared Joys s'en sert pour
-        /// choisir un lieu d'evenement autonome, et exige au moins deux places.
+        /// How many pawns this meeting point can hold. Shared Joys uses it to pick a place for an
+        /// autonomous event, and requires at least two spots.
         /// </summary>
         public static int CountSpots(Building anchor, Pawn probe)
         {

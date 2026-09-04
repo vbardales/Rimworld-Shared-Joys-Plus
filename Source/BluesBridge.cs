@@ -7,10 +7,9 @@ using Verse;
 namespace SharedJoysPlus
 {
     /// <summary>
-    /// Tout ce qui touche a l'assemblage de Blues passe par ici, et uniquement par reflexion.
-    /// Aucune reference de compilation : si Shared Joys disparait, change de nom de type ou de
-    /// signature, ce mod continue de se charger, et seules les fonctions qui en dependent
-    /// s'eteignent.
+    /// Everything that touches Blues' assembly goes through here, and through reflection only.
+    /// No compile-time reference: if Shared Joys disappears, renames a type or changes a
+    /// signature, this mod still loads and only the features that depend on it go quiet.
     /// </summary>
     public static class BluesBridge
     {
@@ -28,7 +27,7 @@ namespace SharedJoysPlus
         static readonly MethodInfo needFrenGetter = Getter("NeedFren");
         static readonly FieldInfo enableMenusField = AccessTools.Field(SettingsType, "enableMenus");
 
-        /// <summary>Shared Joys est-il charge et reconnaissable ?</summary>
+        /// <summary>Is Shared Joys loaded and recognisable?</summary>
         public static bool Present => JoyUtilType != null;
 
         static MethodInfo Method(Type type, string name, params Type[] args)
@@ -41,20 +40,20 @@ namespace SharedJoysPlus
             return SettingsType == null ? null : AccessTools.PropertyGetter(SettingsType, propertyName);
         }
 
-        // --- Reglages de Shared Joys, avec les valeurs par defaut du mod en repli -------------
+        // --- Shared Joys' settings, with this mod's own defaults as a fallback ------------------
 
-        /// <summary>Niveau auquel le loisir est ramene avant un moment partage.</summary>
+        /// <summary>The level recreation is brought down to before a shared break.</summary>
         public static float JoyDrainTo => joyDrainToGetter != null ? (float)joyDrainToGetter.Invoke(null, null) : 0.6f;
 
-        /// <summary>Au-dessus de ce niveau de loisir, un pion decline une invitation manuelle.</summary>
+        /// <summary>Above this recreation level, a pawn turns a manual invitation down.</summary>
         public static float MaxRecTrig => maxRecTrigGetter != null ? (float)maxRecTrigGetter.Invoke(null, null) : 0.95f;
 
-        /// <summary>Opinion minimale exigee entre les deux pions.</summary>
+        /// <summary>The minimum opinion required between the two pawns.</summary>
         public static int NeedFren => needFrenGetter != null ? (int)needFrenGetter.Invoke(null, null) : 30;
 
         public static bool EnableMenus => enableMenusField == null || (bool)enableMenusField.GetValue(null);
 
-        // --- Predicats partages ---------------------------------------------------------------
+        // --- Shared predicates -----------------------------------------------------------------
 
         public static bool IsOnHangoutCooldown(Pawn p)
         {
@@ -64,7 +63,7 @@ namespace SharedJoysPlus
         public static bool IsBusy(Pawn p)
         {
             if (isBusyMethod != null) return (bool)isBusyMethod.Invoke(null, new object[] { p });
-            // Repli minimal, aligne sur ce que fait Shared Joys.
+            // Minimal fallback, matching what Shared Joys does.
             if (p.Drafted || p.InMentalState || p.IsBurning()) return true;
             var job = p.jobs?.curJob;
             if (job == null) return false;
@@ -72,15 +71,15 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Un champ statique prive de Shared Joys est-il renseigne ? Sert au controle de sante des
-        /// <c>MethodInfo</c> qu'il met en cache : un champ nul y signifie une methode vanilla
-        /// introuvable, donc une fonction eteinte sans un mot.
+        /// Is one of Shared Joys' private static fields set? Used for the health check on the
+        /// <c>MethodInfo</c>s it caches: a null field there means a vanilla method it could not
+        /// find, and therefore a feature switched off without a word.
         /// </summary>
         public static bool PrivateStaticFieldIsSet(string typeName, string fieldName)
         {
             Type type = AccessTools.TypeByName(typeName);
             FieldInfo field = type == null ? null : AccessTools.Field(type, fieldName);
-            // Champ absent : la classe a change de forme, ce n'est pas a nous d'en juger ici.
+            // Field gone: the class has changed shape, which is not ours to judge here.
             if (field == null) return true;
             return field.GetValue(null) != null;
         }

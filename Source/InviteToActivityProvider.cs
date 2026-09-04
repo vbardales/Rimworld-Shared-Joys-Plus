@@ -7,9 +7,9 @@ using Verse.AI;
 namespace SharedJoysPlus
 {
     /// <summary>
-    /// « Inviter X a une activite... » sur le menu contextuel d'un colon. C'est la seule entree
-    /// possible pour les loisirs qui n'ont pas de batiment : il n'y a rien a cliquer sur la carte.
-    /// Ce fournisseur ne derive pas de ceux de Shared Joys — il fonctionne meme seul.
+    /// "Invite X to an activity..." on a colonist's float menu. It is the only possible entry point
+    /// for recreation that has no building: there is nothing on the map to click.
+    /// This provider does not derive from Shared Joys' own: it works even without that mod.
     /// </summary>
     public class InviteToActivityProvider : FloatMenuOptionProvider
     {
@@ -67,7 +67,7 @@ namespace SharedJoysPlus
             return group;
         }
 
-        /// <summary>Les memes refus que Shared Joys oppose a une invitation manuelle.</summary>
+        /// <summary>The same refusals Shared Joys applies to a manual invitation.</summary>
         static FloatMenuOption Blocker(Pawn host, Pawn target)
         {
             float max = BluesBridge.MaxRecTrig;

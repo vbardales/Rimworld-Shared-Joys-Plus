@@ -4,8 +4,8 @@ using Verse;
 namespace SharedJoysPlus
 {
     /// <summary>
-    /// Deux JobDef du jeu de base que <c>RimWorld.JobDefOf</c> n'expose pas : leurs fournisseurs
-    /// vanilla les prennent par <c>def.jobDef</c>, jamais par nom.
+    /// Two base game JobDefs that <c>RimWorld.JobDefOf</c> does not expose: their vanilla givers
+    /// reach them through <c>def.jobDef</c>, never by name.
     /// </summary>
     [DefOf]
     public static class SjpDefOf

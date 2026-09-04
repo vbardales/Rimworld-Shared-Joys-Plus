@@ -7,22 +7,22 @@ using Verse.AI;
 namespace SharedJoysPlus
 {
     /// <summary>
-    /// Fait jouer aux plateaux sans chaise, assis par terre, dans la limite du nombre de joueurs
-    /// que la tache autorise.
+    /// Lets board games be played without a chair, sitting on the ground, up to the number of
+    /// players the job allows.
     /// </summary>
     /// <remarks>
-    /// <c>JoyGiver_InteractBuildingSitAdjacent.TryGivePlayJob</c> cherche une place en deux passes :
-    /// d'abord une vraie chaise, puis n'importe quelle case reservable. Mais entre les deux il fait
-    /// <c>if (def.requireChair) break;</c>, et <c>requireChair</c> vaut <b>vrai par defaut</b> —
-    /// aucun <c>JoyGiverDef</c> du jeu de base ne le passe a faux. La seconde passe n'a donc
-    /// pratiquement jamais lieu : pas de chaise, pas de partie.
+    /// <c>JoyGiver_InteractBuildingSitAdjacent.TryGivePlayJob</c> looks for a seat in two passes:
+    /// a real chair first, then any reservable cell. But between the two it does
+    /// <c>if (def.requireChair) break;</c>, and <c>requireChair</c> defaults to <b>true</b>, with
+    /// no <c>JoyGiverDef</c> in the base game setting it to false. So the second pass almost never
+    /// happens: no chair, no game.
     ///
-    /// Rien dans le jeu n'exige pourtant cette chaise. <c>JobDriver_SitFacingBuilding</c> reserve
-    /// la case d'assise par <c>ReserveSittableOrSpot</c>, qui accepte une case nue, et le pion s'y
-    /// assoit sans rien casser. On refait donc la seconde passe nous-memes.
+    /// Nothing in the game actually needs that chair. <c>JobDriver_SitFacingBuilding</c> reserves
+    /// the seat with <c>ReserveSittableOrSpot</c>, which takes a bare cell, and the pawn sits down
+    /// without anything breaking. So the second pass is done here instead.
     ///
-    /// Le seul plafond qu'on respecte est celui du jeu : <c>jobDef.joyMaxParticipants</c>, celui-la
-    /// meme que le pilote reserve sur le batiment. Un plateau prevu pour deux reste a deux.
+    /// The one limit kept is the game's own: <c>jobDef.joyMaxParticipants</c>, the very number the
+    /// driver reserves on the building. A board meant for two stays a board for two.
     /// </remarks>
     public static class GroundSeating
     {
@@ -35,7 +35,7 @@ namespace SharedJoysPlus
             if (giver?.jobDef == null || giver.giverClass == null) return null;
             if (!typeof(JoyGiver_InteractBuildingSitAdjacent).IsAssignableFrom(giver.giverClass)) return null;
 
-            // Les memes refus que CanInteractWith, moins celui de la chaise.
+            // The same refusals as CanInteractWith, minus the one about the chair.
             if (b.IsForbidden(pawn) || b.Fogged()) return null;
             if (!b.IsSociallyProper(pawn) || !b.IsPoliticallyProper(pawn)) return null;
             CompPowerTrader power = b.TryGetComp<CompPowerTrader>();
@@ -53,8 +53,8 @@ namespace SharedJoysPlus
         }
 
         /// <summary>
-        /// Une case cardinale libre. Les chaises d'abord, comme le vanilla : quand il y en a, autant
-        /// que les pions s'assoient dessus.
+        /// A free cardinal cell. Chairs first, as vanilla does: where there are any, the pawns may
+        /// as well sit on them.
         /// </summary>
         static IntVec3 FindSeat(Pawn pawn, Building b, List<LocalTargetInfo> taken, bool chairsOnly)
         {
@@ -72,7 +72,7 @@ namespace SharedJoysPlus
                 }
                 else if (edifice != null && !edifice.def.building.isSittable)
                 {
-                    // Un mur ou un autre meuble : on ne s'assoit pas dedans.
+                    // A wall or another piece of furniture: you do not sit inside it.
                     continue;
                 }
 
